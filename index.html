@@ -145,8 +145,8 @@ h1,h2,h3,p,figure{margin:0}
 .zones{display:flex;gap:16px;padding:9px 4px 0;font-size:12.5px;color:var(--ink3)}
 .zones span{display:inline-flex;align-items:center;gap:6px}
 .zones i{width:4px;height:13px;border-radius:2px;display:inline-block}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--pink);display:inline-block;flex:none}
-.dia{width:9px;height:9px;background:var(--gold);transform:rotate(45deg);display:inline-block;flex:none;box-shadow:0 0 0 1.5px var(--purple)}
+.dot{width:10px;height:10px;border-radius:50%;background:#0ea5e9;display:inline-block;flex:none}
+.dia{width:9px;height:9px;background:#7c3aed;transform:rotate(45deg);display:inline-block;flex:none;box-shadow:0 0 0 1.5px var(--purple)}
 .empty{margin:4px;font-size:14px;color:var(--ink2);padding:12px 14px;border:1.5px dashed var(--rule);border-radius:12px}
 
 /* details */
@@ -206,12 +206,13 @@ details.more .coordbox{background:#fff}
 .ticks{display:flex;justify-content:space-between;font-size:12.5px;color:rgba(255,255,255,.8);margin-top:4px;font-variant-numeric:tabular-nums}
 .keys{display:flex;flex-wrap:wrap;gap:3px 14px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:rgba(255,255,255,.8)}
 .keys span{display:inline-flex;align-items:center;gap:6px}
-.keys .nod{width:14px;height:9px;border-radius:2px;background:#4a2a52;display:inline-block}
+.keys .nod{width:14px;height:9px;border-radius:2px;background:#8e96a3;display:inline-block}
 .coords{position:absolute;right:18px;bottom:30px;z-index:6;font-family:var(--head);font-size:13.5px;color:rgba(255,255,255,.8);font-variant-numeric:tabular-nums;text-shadow:0 0 6px #1a0420}
 .attr{position:absolute;right:0;bottom:0;z-index:6;padding:1px 8px;font-size:11px;color:rgba(255,255,255,.6);background:rgba(26,4,32,.75);border-top-left-radius:6px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .attr:empty{display:none}
 
 /* map graphics: hex texture, callout card, leader lines */
+body:not(.base-plain) .fx-hex{display:none}
 .fx-hex{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.07;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='48.5' viewBox='0 0 28 48.5'%3E%3Cpath d='M14 0l14 8.08v16.17L14 32.33 0 24.25V8.08zM14 32.33v16.17' fill='none' stroke='%2304f5ff' stroke-width='.7'/%3E%3C/svg%3E");
   -webkit-mask-image:radial-gradient(ellipse 75% 70% at 55% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 75% 70% at 55% 50%,#000 30%,transparent 100%)}
@@ -242,10 +243,12 @@ details.more .coordbox{background:#fff}
 .co-f b{color:#ff5fa2;font-weight:600}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .keys .bub{width:14px;height:14px;border-radius:50%;border:2px solid #00ff85;background:rgba(36,0,40,.9);display:inline-block;box-shadow:0 0 6px rgba(0,255,133,.6)}
+.keys .pin{width:13px;height:17px;display:inline-block;background-size:contain;background-repeat:no-repeat;background-position:center bottom}
+.keys .heat{width:30px;height:9px;border-radius:2px;display:inline-block}
 .keys .net{width:22px;height:2px;background:#04f5ff;display:inline-block;box-shadow:0 0 5px #04f5ff;border-radius:1px}
 
 /* 3D labels */
-.l3{position:absolute;left:0;top:0;background:#fff;border-radius:8px;padding:2px 10px 3px;text-align:center;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.35);will-change:transform;opacity:0;transition:opacity .2s;border-left:4px solid var(--green)}
+.l3{position:absolute;left:0;top:0;background:rgba(255,255,255,.95);border-radius:8px;padding:2px 10px 3px;text-align:center;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.35);will-change:transform;opacity:0;transition:opacity .2s;border-left:4px solid var(--green)}
 .l3 b{display:block;font-family:var(--head);font-weight:700;font-size:13.5px;line-height:1.35;color:var(--purple)}
 .l3 span{display:block;font-family:var(--head);font-size:12.5px;color:var(--ink2);line-height:1.25;font-variant-numeric:tabular-nums}
 .l3.sel{background:var(--purple);border-left-color:var(--cyan)}
@@ -307,7 +310,7 @@ details.more .coordbox{background:#fff}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
-<body class="view-2d">
+<body class="view-2d base-sat">
 <header class="top">
   <div class="brand">
     <svg class="logo" viewBox="0 0 48 52" aria-hidden="true"><defs><linearGradient id="lgL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#04f5ff"/><stop offset="1" stop-color="#00ff85"/></linearGradient></defs>
@@ -350,7 +353,7 @@ details.more .coordbox{background:#fff}
     <div class="layers" id="layersPop" hidden>
       <h3>แผนที่พื้นหลัง</h3>
       <div class="seg full" id="baseSeg" role="group" aria-label="แผนที่พื้นหลัง">
-        <button data-b="plain" class="on" aria-pressed="true">สนาม</button><button data-b="street" aria-pressed="false">ถนน</button><button data-b="sat" aria-pressed="false">ดาวเทียม</button><button data-b="none" aria-pressed="false">ไม่มี</button>
+        <button data-b="sat" class="on" aria-pressed="true">ดาวเทียม</button><button data-b="street" aria-pressed="false">ถนน</button><button data-b="plain" aria-pressed="false">โทนมืด</button><button data-b="none" aria-pressed="false">ไม่มี</button>
       </div>
       <h3>แสดงบนแผนที่</h3>
       <div class="checks" id="layers"></div>
@@ -1448,14 +1451,14 @@ const UI = (() => {
 
   // ---------- map palette: sequential single hue (green), low values sit closest to the purple background ----------
   const THEME = {
-    colors: ['#13453f', '#16705a', '#159c72', '#22c985', '#7dffbb'], nodata: '#3d2445', other: '#2a0d31',
+    colors: ['#ffe9a8', '#fec35a', '#fb8c3c', '#e8492f', '#b3132f'], nodata: '#8e96a3', other: '#1c1f2b',
     bg: '#1a0420', mask: 'rgba(20,0,26,.62)', tint: 'rgba(55,0,60,.5)', line: 'rgba(255,255,255,.6)', lineDim: 'rgba(255,255,255,.16)',
     prov: '#04f5ff', provGlow: 12, text: '#ffffff', sub: '#7dffbb', halo: 'rgba(26,0,32,.9)', sel: '#04f5ff', hover: '#ffffff',
-    unit: '#ff2d87', hosp: '#ffd23f', ground: 0x1a0420, grid: 'rgba(255,255,255,.18)', gridText: 'rgba(255,255,255,.8)',
+    unit: '#0ea5e9', hosp: '#7c3aed', ground: 0x1a0420, grid: 'rgba(255,255,255,.18)', gridText: 'rgba(255,255,255,.8)',
   };
   const TH = () => THEME;
   const state = {
-    view: '2d', base: 'plain', metric: 'pop', d: null, t: null, u: null, hov: null, tour: false,
+    view: '2d', base: 'sat', metric: 'pop', d: null, t: null, u: null, hov: null, tour: false,
     layers: { units: true, labels: true, net: true, bubbles: true, grid: false },
   };
   const niceRound = v => { const p = 10 ** Math.floor(Math.log10(v) - 1); return Math.round(v / p) * p; };
@@ -1515,7 +1518,9 @@ const UI = (() => {
   const BASES = {
     plain: { url: ESRI('Canvas/World_Dark_Gray_Base'), maxZ: 16, bg: '#1f2329', tint: true, attr: 'แผนที่ © Esri, HERE, Garmin, © OpenStreetMap contributors' },
     street: { url: ESRI('World_Street_Map'), maxZ: 19, bg: '#e8e4dc', attr: 'แผนที่ © Esri, HERE, Garmin, © OpenStreetMap contributors และ GIS User Community' },
-    sat: { url: ESRI('World_Imagery'), maxZ: 18, bg: '#1b2530', attr: 'ภาพดาวเทียม © Esri, Maxar, Earthstar Geographics' },
+    sat: { url: ESRI('World_Imagery'), maxZ: 18, bg: '#1b2530', overlays: ['roads', 'places'], attr: 'ภาพดาวเทียม © Esri, Maxar, Earthstar Geographics · ชื่อสถานที่/ถนน © Esri, HERE, Garmin' },
+    roads: { url: ESRI('Reference/World_Transportation'), maxZ: 18 },
+    places: { url: ESRI('Reference/World_Boundaries_and_Places'), maxZ: 18 },
   };
   const baseKey = () => (state.base === 'none' ? null : state.base);
   const tiles = new Map();
@@ -1548,6 +1553,23 @@ const UI = (() => {
   const lat2ty = (lat, z) => { const r = lat * Math.PI / 180; return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * 2 ** z; };
   const tx2lon = (x, z) => x / 2 ** z * 360 - 180;
   const ty2lat = (y, z) => Math.atan(Math.sinh(Math.PI * (1 - 2 * y / 2 ** z))) * 180 / Math.PI;
+
+  // ---------- map pins (drawn once, reused by both maps and the legend) ----------
+  /** Teardrop map pin with a white medical cross; canvas is 120×160 with the tip at (60, 154). */
+  function pinCanvas(fill) {
+    const c = document.createElement('canvas'); c.width = 120; c.height = 160;
+    const g = c.getContext('2d'); g.scale(2, 2);
+    g.fillStyle = 'rgba(0,0,0,.3)'; g.beginPath(); g.ellipse(30, 77, 10, 3, 0, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.moveTo(30, 77); g.bezierCurveTo(24, 62, 6, 50, 6, 30); g.arc(30, 30, 24, Math.PI, 0); g.bezierCurveTo(54, 50, 36, 62, 30, 77); g.closePath();
+    const gr = g.createLinearGradient(0, 6, 0, 77); gr.addColorStop(0, '#ffffff'); gr.addColorStop(0.08, fill); gr.addColorStop(1, fill);
+    g.fillStyle = gr; g.fill(); g.lineWidth = 3; g.strokeStyle = '#ffffff'; g.stroke();
+    g.fillStyle = '#ffffff';
+    const bar = (x, y, w, h) => { g.beginPath(); g.roundRect ? g.roundRect(x, y, w, h, 2) : g.rect(x, y, w, h); g.fill(); };
+    bar(19, 26.5, 22, 7); bar(26.5, 19, 7, 22);
+    return c;
+  }
+  const PINS = { unit: pinCanvas(THEME.unit), hosp: pinCanvas(THEME.hosp) };
+  const PIN_URL = { unit: PINS.unit.toDataURL(), hosp: PINS.hosp.toDataURL() };
 
   // ---------- panel building blocks ----------
   const SHIELD = 'M24 2 45 10v15c0 13-9.5 21-21 25C12.5 46 3 38 3 25V10z';
@@ -1717,10 +1739,10 @@ const UI = (() => {
     $('#legendBody').innerHTML = `<div class="ramp">${THEME.colors.map(c => `<i style="background:${c}"></i>`).join('')}</div>
       <div class="ticks">${[lo, ...b, hi].map(v => `<span>${M.fmt(v)}</span>`).join('')}</div>
       ${state.d
-        ? `<div class="keys"><span><i class="dot"></i>รพ.สต.</span><span><i class="dia"></i>รพ. / ศูนย์บริการ</span><span><i class="net"></i>เชื่อมกับโรงพยาบาลแม่ข่าย (CUP)</span><span><i class="nod"></i>ไม่มีหน่วยบริการ</span></div>`
+        ? `<div class="keys"><span><i class="pin" style="background-image:url(${PIN_URL.unit})"></i>รพ.สต.</span><span><i class="pin" style="background-image:url(${PIN_URL.hosp})"></i>รพ. / ศูนย์บริการ</span><span><i class="net"></i>เชื่อมกับโรงพยาบาลแม่ข่าย</span><span><i class="nod"></i>ไม่มีหน่วยบริการ</span></div>`
         : state.view === '3d'
-          ? `<div class="keys"><span>ความสูงแท่ง = ${M.short} · ตัวเลขในป้าย = อันดับ</span></div>`
-          : `<div class="keys"><span><i class="bub"></i>ขนาดวงกลม = ${M.short} · ตัวเลข = อันดับ</span></div>`}`;
+          ? `<div class="keys"><span>สีเข้ม/แดง และแท่งสูง = ${M.short}มาก · ตัวเลขในป้าย = อันดับ</span></div>`
+          : `<div class="keys"><span>สีแดงเข้ม = ${M.short}มาก</span><span><i class="bub"></i>ขนาดวงกลม = ${M.short} · ตัวเลข = อันดับ</span></div>`}`;
   }
   const HINTS = {
     province: 'คลิก <b>อำเภอ</b> บนแผนที่หรือในตาราง เพื่อดูอันดับตำบล',
@@ -1835,6 +1857,7 @@ const UI = (() => {
   function setBase(b) {
     if (state.base === b) return;
     state.base = b; segSet('#baseSeg', 'b', b); setAttr();
+    ['sat', 'street', 'plain', 'none'].forEach(k => document.body.classList.toggle('base-' + k, k === b));
     emit('base', b);
   }
   function setView(v) {
@@ -1985,7 +2008,7 @@ const UI = (() => {
   return {
     D, T, U, P, byD, byT, byU, tambonsBy, unitsByT, unitsByD, shortName, state, METRICS, TH, level, colorD, colorT, on, emit,
     focus, up, hover, tipFor, setView, cursor, tip, toast, stopTour, safeRect, isMobile, districtAt, tambonAt,
-    calloutVisible, calloutTargets: () => targets, drawLeaders, rankIn, sorted,
+    calloutVisible, calloutTargets: () => targets, drawLeaders, rankIn, sorted, PINS,
     fontsReady, reduceMotion, nf0, nf1, BASES, baseKey, tile, tileCached, lon2tx, lat2ty, tx2lon, ty2lat,
   };
 })();
@@ -2066,7 +2089,9 @@ const Map2D = (() => {
     if (instant) Object.assign(view, goal);
   }
   const zf = () => clamp(Math.pow(view.s / fitS, 0.35), 1, 2.4);
-  const unitR = u => u._r * zf() * unitScale * (ft && u.tc === ft.code ? 1.5 : 1);
+  const pinH = u => (20 + 14 * Math.sqrt(u.pop / maxUnitPop)) * clamp(Math.pow(view.s / fitS, 0.18), 1, 1.6) * Math.max(0.75, unitScale) * (ft && u.tc === ft.code ? 1.3 : 1) * (u === fu ? 1.25 : 1);
+  const unitR = u => pinH(u) * 0.3;
+  const headXY = u => { const [sx, sy] = toS(u._xy[0], u._xy[1]); return [sx, sy - pinH(u) * 0.5875]; };
 
   // current focus objects
   let fd = null, ft = null, fu = null, hov = null, focusT = 0;
@@ -2130,7 +2155,7 @@ const Map2D = (() => {
   function pick(evt) {
     let hit = null, best = Infinity;
     for (const u of fd ? unitsShown() : []) {
-      const [sx, sy] = toS(u._xy[0], u._xy[1]);
+      const [sx, sy] = headXY(u);
       const dd = Math.hypot(sx - mouse.x, sy - mouse.y);
       if (dd < Math.max(10, unitR(u) + 5) && dd < best) { best = dd; hit = { kind: 'u', code: u.code }; }
     }
@@ -2164,9 +2189,13 @@ const Map2D = (() => {
   const ctlZoom = f => { if (active) { UI.stopTour(); zoomAt(A[0], A[1], f, false); } };
 
   // ---------- drawing ----------
-  function drawTiles() {
-    const b = UI.baseKey(), B = b && UI.BASES[b];
-    if (!B) return;
+  function drawTiles() { const b = UI.baseKey(); if (b) drawLayer(b); }
+  function drawOverlays() {
+    const B = UI.BASES[UI.baseKey()];
+    if (B && B.overlays) { ctx.globalAlpha = 0.92; B.overlays.forEach(drawLayer); ctx.globalAlpha = 1; }
+  }
+  function drawLayer(b) {
+    const B = UI.BASES[b];
     screenTf();
     const pxPerDeg = K * cos0 * view.s * (b === 'sat' ? dpr : 1);
     const z = clamp(Math.round(Math.log2(pxPerDeg * 360 / 256)), 3, B.maxZ), n = 2 ** z;
@@ -2200,7 +2229,7 @@ const Map2D = (() => {
       const mask = new Path2D(); mask.rect(wx0, wy0, wx1 - wx0, wy1 - wy0); mask.addPath(prov);
       ctx.fillStyle = light ? 'rgba(36,0,40,.4)' : th.mask; ctx.fill(mask, 'evenodd');
     }
-    const alpha = state.base === 'sat' ? 0.74 : light ? 0.84 : 0.9;
+    const alpha = state.base === 'sat' ? 0.62 : light ? 0.8 : 0.9;
     // districts
     for (const d of D) {
       if (fd && d === fd) continue;
@@ -2259,28 +2288,22 @@ const Map2D = (() => {
     for (const u of unitsShown()) {
       const [sx, sy] = toS(u._xy[0], u._xy[1]);
       if (sx < -30 || sx > W + 30 || sy < -30 || sy > H + 30) continue;
-      const inT = ft && u.tc === ft.code;
-      const r = unitR(u);
-      ctx.globalAlpha = ft && !inT ? 0.45 : 1;
-      ctx.drawImage(u.hosp ? GLOW_H : GLOW_U, sx - r * 3, sy - r * 3, r * 6, r * 6);
-      ctx.fillStyle = u.hosp ? UI.TH().hosp : UI.TH().unit;
-      ctx.strokeStyle = u.hosp ? '#37003c' : 'rgba(255,255,255,.95)'; ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      if (u.hosp) { ctx.moveTo(sx, sy - r * 1.2); ctx.lineTo(sx + r * 1.2, sy); ctx.lineTo(sx, sy + r * 1.2); ctx.lineTo(sx - r * 1.2, sy); ctx.closePath(); } else ctx.arc(sx, sy, r, 0, TAU);
-      ctx.fill(); ctx.stroke();
+      const inT = ft && u.tc === ft.code, h = pinH(u), w = h * 0.75;
+      ctx.globalAlpha = ft && !inT ? 0.5 : 1;
       if (inT && !UI.reduceMotion) {
-        const ph = ((t + u._r * 300) / 1600) % 1;
-        ctx.strokeStyle = `rgba(4,245,255,${0.85 * (1 - ph)})`; ctx.lineWidth = 1.6;
-        ctx.beginPath(); ctx.arc(sx, sy, r + 3 + ph * 18, 0, TAU); ctx.stroke();
+        const ph = ((t + u._ph * 1600) / 1600) % 1;
+        ctx.strokeStyle = `rgba(4,245,255,${0.9 * (1 - ph)})`; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.ellipse(sx, sy, 6 + ph * 22, (6 + ph * 22) * 0.45, 0, 0, TAU); ctx.stroke();
       }
+      ctx.drawImage(u.hosp ? UI.PINS.hosp : UI.PINS.unit, sx - w / 2, sy - h * 0.9625, w, h);
     }
     ctx.globalAlpha = 1;
     const hu = hov && hov.kind === 'u' ? UI.byU[hov.code] : null;
     for (const [u, col] of [[hu, '#ffffff'], [fu, UI.TH().sel]]) {
       if (!u) continue;
-      const [sx, sy] = toS(u._xy[0], u._xy[1]), r = unitR(u) * 1.2;
+      const [hx, hy] = headXY(u), r = unitR(u);
       ctx.save(); ctx.shadowColor = col; ctx.shadowBlur = 14;
-      ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(sx, sy, r + 7, 0, TAU); ctx.stroke(); ctx.restore();
+      ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(hx, hy, r + 6, 0, TAU); ctx.stroke(); ctx.restore();
     }
   }
 
@@ -2312,14 +2335,14 @@ const Map2D = (() => {
     // priority: selected unit, selected tambon, its units, then the other tambons and districts
     if (fu && !co) {
       const [sx, sy] = toS(fu._xy[0], fu._xy[1]);
-      label(UI.shortName(fu.name), `${UI.nf0.format(fu.pop)} คน`, sx, sy - unitR(fu) * 1.2 - 26, placed, true, { font: F(700, 16), subColor: UI.TH().sel });
+      label(UI.shortName(fu.name), `${UI.nf0.format(fu.pop)} คน`, sx, sy - pinH(fu) - 24, placed, true, { font: F(700, 16), subColor: UI.TH().sel });
     }
     if (ft && !fu && !co) tLabel(ft, true);
     if (ft) {
       for (const u of UI.unitsByT[ft.code] || []) {
         if (u === fu) continue;
         const [sx, sy] = toS(u._xy[0], u._xy[1]);
-        label(UI.shortName(u.name), `${UI.nf0.format(u.pop)} คน`, sx, sy - unitR(u) * 1.2 - 22, placed, false, { font: F(600, 13.5) });
+        label(UI.shortName(u.name), `${UI.nf0.format(u.pop)} คน`, sx, sy - pinH(u) - 22, placed, false, { font: F(600, 13.5) });
       }
     }
     if (fd && !fu) for (const tb of [...UI.tambonsBy[fd.code]].sort((a, b) => b.pop - a.pop)) if (tb !== ft) tLabel(tb, false);
@@ -2395,9 +2418,9 @@ const Map2D = (() => {
     }
     ctx.globalAlpha = 1;
     for (const h of hubs) {
-      const [hx, hy] = toS(h._xy[0], h._xy[1]), rr = unitR(h) + 10, a = UI.reduceMotion ? 0 : t / 1500;
-      ctx.strokeStyle = 'rgba(255,210,63,.95)'; ctx.lineWidth = 1.8;
-      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(hx, hy, rr, a + i * TAU / 3, a + i * TAU / 3 + 1.3); ctx.stroke(); }
+      const [hx, hy] = toS(h._xy[0], h._xy[1]), rr = 14, a = UI.reduceMotion ? 0 : t / 1500;
+      ctx.strokeStyle = 'rgba(255,210,63,.95)'; ctx.lineWidth = 2;
+      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.ellipse(hx, hy, rr, rr * 0.45, 0, a + i * TAU / 3, a + i * TAU / 3 + 1.3); ctx.stroke(); }
     }
   }
   /** Feed the callout card's leader lines with the current screen positions of what it describes. */
@@ -2426,6 +2449,7 @@ const Map2D = (() => {
     ctx.fillStyle = B ? B.bg : UI.TH().bg; ctx.fillRect(0, 0, W, H);
     drawTiles();
     drawAreas(t);
+    drawOverlays();
     if (state.layers.grid) drawGrid();
     drawNet(t);
     if (state.layers.units) drawUnits(t);
@@ -2449,7 +2473,8 @@ const Map2D = (() => {
 })();
 </script>
 <script>'use strict';
-/* 3D map: extruded districts; focusing a district splits it into extruded tambons, a tambon shows its unit pins.
+/* Realistic 3D map: satellite ground with sharper imagery around the focus, sky, haze, sun and shadows.
+   Districts / tambons are extruded by the selected metric; units are map pins linked to their CUP hospital.
    Built the first time the 3D view opens. */
 const Map3D = (() => {
   let api, failed = false;
@@ -2464,77 +2489,128 @@ const Map3D = (() => {
 
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true });
     } catch (e) {
       const el = document.createElement('div'); el.className = 'err3d';
       el.innerHTML = 'เครื่องหรือเบราว์เซอร์นี้แสดงแผนที่ 3 มิติไม่ได้ (ไม่รองรับ WebGL)<button class="btn">กลับไปแผนที่ 2 มิติ</button>';
       el.querySelector('button').addEventListener('click', () => UI.emit('viewRequest', '2d'));
       host.appendChild(el); return null;
     }
-    renderer.setClearColor(0x000000, 0);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     host.appendChild(renderer.domElement);
+    const ANISO = renderer.capabilities.getMaxAnisotropy();
 
     // ---------- coordinates: x = east, z = south, y = up (1 unit ≈ 1.1 km) ----------
     const [bx0, by0, bx1, by1] = P.bounds;
     const lon0 = (bx0 + bx1) / 2, lat0 = (by0 + by1) / 2, cos0 = Math.cos(lat0 * Math.PI / 180), S = 100;
     const X = lon => (lon - lon0) * cos0 * S, Z = lat => -(lat - lat0) * S;
     const toLL = (x, z) => [-z / S + lat0, x / (cos0 * S) + lon0];
-    const HD = 24, HT = 26;
+    const HD = 22, HT = 22;
 
+    // ---------- sky, haze and light ----------
+    const SKY = { dark: ['#0b1020', '#1d2b4a', '#3a4f72'], light: ['#3f7fc4', '#8fbde6', '#dde8f1'] };
+    const skyTex = cols => {
+      const c = document.createElement('canvas'); c.width = 4; c.height = 256;
+      const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, 256);
+      gr.addColorStop(0, cols[0]); gr.addColorStop(0.55, cols[1]); gr.addColorStop(1, cols[2]);
+      g.fillStyle = gr; g.fillRect(0, 0, 4, 256); return new THREE.CanvasTexture(c);
+    };
+    const skies = { light: skyTex(SKY.light), dark: skyTex(SKY.dark) };
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(UI.TH().ground, 420, 900);
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.5, 3000);
-    camera.position.set(0, 330, 140);
+    scene.fog = new THREE.Fog(0xdde8f1, 300, 900);
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.3, 4000);
+    camera.position.set(0, 320, 220);
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    Object.assign(controls, { enableDamping: true, dampingFactor: 0.1, minDistance: 12, maxDistance: 620, maxPolarAngle: Math.PI * 0.46, rotateSpeed: 0.7 });
-    scene.add(new THREE.HemisphereLight(0xcfefff, 0x0b1426, 0.95));
-    const sun = new THREE.DirectionalLight(0xffffff, 0.55); sun.position.set(-70, 140, 90); scene.add(sun);
+    Object.assign(controls, { enableDamping: true, dampingFactor: 0.1, minDistance: 8, maxDistance: 650, maxPolarAngle: Math.PI * 0.47, rotateSpeed: 0.7 });
+    const hemi = new THREE.HemisphereLight(0xe6f1ff, 0x5d6146, 0.6); scene.add(hemi);
+    const sun = new THREE.DirectionalLight(0xfff4e0, 0.62);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
+    scene.add(sun, sun.target);
+    const SUN_DIR = new THREE.Vector3(-0.55, 1, 0.5).normalize();
 
-    // ---------- ground + basemap ----------
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(1400, 1400).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: UI.TH().ground }));
-    ground.position.y = -0.6; scene.add(ground);
+    // ---------- ground: earth-tone plane, province-wide imagery, sharper imagery patch around the focus ----------
+    const groundMat = new THREE.MeshLambertMaterial({ color: 0x7b8159 });
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(3000, 3000).rotateX(-Math.PI / 2), groundMat);
+    ground.position.y = -0.4; ground.receiveShadow = true; scene.add(ground);
     let maxR = 0;
     P.geom.forEach(poly => poly[0].forEach(([lo, la]) => { maxR = Math.max(maxR, Math.hypot(X(lo), Z(la))); }));
-    const BASE_Z = 11, RS = maxR + 26;
     const edgeFade = (() => {
       const n = 128, c = document.createElement('canvas'); c.width = c.height = n;
       const g = c.getContext('2d'), img = g.createImageData(n, n);
       for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-        const e = Math.min(1, Math.min(x, y, n - 1 - x, n - 1 - y) / (n * 0.14)), a = Math.round(255 * e * e * (3 - 2 * e));
+        const e = Math.min(1, Math.min(x, y, n - 1 - x, n - 1 - y) / (n * 0.12)), a = Math.round(255 * e * e * (3 - 2 * e));
         const i = (y * n + x) * 4; img.data[i] = img.data[i + 1] = img.data[i + 2] = a; img.data[i + 3] = 255;
       }
       g.putImageData(img, 0, 0);
       return new THREE.CanvasTexture(c);
     })();
-    const bases = {};
-    function buildBase(b) {
-      const latN = toLL(0, -RS)[0], latS = toLL(0, RS)[0], lonW = toLL(-RS, 0)[1], lonE = toLL(RS, 0)[1];
-      const tx0 = Math.floor(UI.lon2tx(lonW, BASE_Z)), tx1 = Math.floor(UI.lon2tx(lonE, BASE_Z));
-      const ty0 = Math.floor(UI.lat2ty(latN, BASE_Z)), ty1 = Math.floor(UI.lat2ty(latS, BASE_Z));
-      const LW = UI.tx2lon(tx0, BASE_Z), LE = UI.tx2lon(tx1 + 1, BASE_Z), LN = UI.ty2lat(ty0, BASE_Z), LS = UI.ty2lat(ty1 + 1, BASE_Z);
+    const sheets = [];
+    /** A ground sheet covering [lonW..lonE]×[latS..latN] built from map tiles of one layer at zoom z. */
+    function sheet(layer, z, lonW, lonE, latS, latN, y, lit) {
+      const tx0 = Math.floor(UI.lon2tx(lonW, z)), tx1 = Math.floor(UI.lon2tx(lonE, z));
+      const ty0 = Math.floor(UI.lat2ty(latN, z)), ty1 = Math.floor(UI.lat2ty(latS, z));
+      const LW = UI.tx2lon(tx0, z), LE = UI.tx2lon(tx1 + 1, z), LN = UI.ty2lat(ty0, z), LS = UI.ty2lat(ty1 + 1, z);
       const cw = (tx1 - tx0 + 1) * 256, ch = (ty1 - ty0 + 1) * 256;
       const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
-      const g = cv.getContext('2d'); g.fillStyle = UI.TH().bg; g.fillRect(0, 0, cw, ch);
+      const g = cv.getContext('2d');
+      const B = UI.BASES[layer];
+      if (lit) { g.fillStyle = B.bg; g.fillRect(0, 0, cw, ch); }
       const tex = new THREE.CanvasTexture(cv);
-      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      tex.anisotropy = ANISO;
       if (!renderer.capabilities.isWebGL2) { tex.generateMipmaps = false; tex.minFilter = THREE.LinearFilter; }
-      const mat = new THREE.MeshBasicMaterial({ map: tex, alphaMap: edgeFade, transparent: true, depthWrite: false, color: b === 'street' ? 0xc4b3c8 : b === 'plain' ? 0xc79bd0 : 0xffffff });
+      const mat = lit
+        ? new THREE.MeshLambertMaterial({ map: tex, alphaMap: edgeFade, transparent: true, depthWrite: false, color: B.tint ? 0xb79bc0 : 0xffffff })
+        : new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, opacity: 0.95 });
       const mesh = new THREE.Mesh(new THREE.PlaneGeometry(X(LE) - X(LW), Z(LS) - Z(LN)).rotateX(-Math.PI / 2), mat);
-      mesh.position.set((X(LW) + X(LE)) / 2, -0.08, (Z(LN) + Z(LS)) / 2);
-      mesh.renderOrder = -1; scene.add(mesh);
+      mesh.position.set((X(LW) + X(LE)) / 2, y, (Z(LN) + Z(LS)) / 2);
+      mesh.receiveShadow = lit; mesh.renderOrder = lit ? -2 : -1;
+      scene.add(mesh);
       const o = { mesh, tex, dirty: false, lastUp: 0 };
       for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++) {
         // tiles are Web Mercator; the 3D ground is linear in latitude, so each tile is stretched to its own latitude band
-        const yA = Math.floor((LN - UI.ty2lat(ty, BASE_Z)) / (LN - LS) * ch), yB = Math.ceil((LN - UI.ty2lat(ty + 1, BASE_Z)) / (LN - LS) * ch);
+        const yA = Math.floor((LN - UI.ty2lat(ty, z)) / (LN - LS) * ch), yB = Math.ceil((LN - UI.ty2lat(ty + 1, z)) / (LN - LS) * ch);
         const xA = (tx - tx0) * 256;
-        UI.tile(b, BASE_Z, tx, ty, t => { g.drawImage(t.img, xA, yA, 256, yB - yA); o.dirty = true; });
+        UI.tile(layer, z, tx, ty, t => { g.drawImage(t.img, xA, yA, 256, yB - yA); o.dirty = true; });
       }
+      sheets.push(o);
       return o;
     }
+    const RS = maxR + 30;
+    const baseSheets = {}, detail = {};
     function applyBase() {
       const b = UI.baseKey();
-      if (UI.BASES[b] && !bases[b]) bases[b] = buildBase(b);
-      for (const k in bases) bases[k].mesh.visible = k === b;
+      if (b && !baseSheets[b]) {
+        const [latN] = toLL(0, -RS), [latS] = toLL(0, RS), lonW = toLL(-RS, 0)[1], lonE = toLL(RS, 0)[1];
+        baseSheets[b] = sheet(b, 11, lonW, lonE, latS, latN, -0.12, true);
+      }
+      for (const k in baseSheets) baseSheets[k].mesh.visible = k === b;
+      const dark = b === 'plain' || !b;
+      scene.background = dark ? skies.dark : skies.light;
+      scene.fog.color.set(dark ? SKY.dark[2] : SKY.light[2]);
+      groundMat.color.set(dark ? 0x1a1f2b : b === 'street' ? 0xd9d3c7 : 0x7b8159);
+      applyDetail();
+    }
+    /** Sharper imagery (plus road / place-name overlays on satellite) for the focused district or tambon. */
+    function applyDetail() {
+      const b = UI.baseKey(), x = ft || fd;
+      let key = null;
+      if (b && x) {
+        key = `${b}:${x.code}`;
+        if (!detail[key]) {
+          const [s, w, n, e] = x.bounds, pad = ft ? 0.35 : 0.12;
+          const dLat = (n - s) * pad + 0.01, dLon = (e - w) * pad + 0.01;
+          const lonW = w - dLon, lonE = e + dLon, latS = s - dLat, latN = n + dLat;
+          let z = 16;
+          while (z > 11 && Math.max(UI.lon2tx(lonE, z) - UI.lon2tx(lonW, z), UI.lat2ty(latS, z) - UI.lat2ty(latN, z)) > 11) z--;
+          const parts = [sheet(b, Math.min(z, UI.BASES[b].maxZ), lonW, lonE, latS, latN, -0.07, true)];
+          (UI.BASES[b].overlays || []).forEach((o, i) => parts.push(sheet(o, Math.min(z, UI.BASES[o].maxZ), lonW, lonE, latS, latN, -0.05 + i * 0.01, false)));
+          detail[key] = parts;
+        }
+      }
+      for (const k in detail) detail[k].forEach(o => (o.mesh.visible = k === key));
     }
 
     // ---------- extruded areas (districts and tambons) ----------
@@ -2554,10 +2630,11 @@ const Map3D = (() => {
       });
       const geo = new THREE.ExtrudeGeometry(shapes, { depth: 1, bevelEnabled: false, curveSegments: 1, steps: 1 });
       geo.rotateX(-Math.PI / 2);
-      // lit roof + flat-coloured walls (per-face wall lighting looks striped on detailed boundaries)
+      // lit roof + flat-shaded walls (per-face wall lighting looks striped on detailed boundaries); casts a real shadow
       const roof = new THREE.MeshLambertMaterial({ transparent: true });
       const wall = new THREE.MeshBasicMaterial({ transparent: true });
       const mesh = new THREE.Mesh(geo, [roof, wall]);
+      mesh.castShadow = true;
       mesh.userData = { kind, code: x.code };
       const top = lineSeg(x.geom.flatMap(poly => poly.flatMap(r => ringPts(r, 1))), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true }));
       const g = new THREE.Group(); g.add(mesh, top); g.scale.y = 0.001; g.visible = false; scene.add(g);
@@ -2571,21 +2648,30 @@ const Map3D = (() => {
     }
     D.forEach(d => prism(d, 'd'));
     T.forEach(t => prism(t, 't'));
-    scene.add(lineSeg(P.geom.flatMap(poly => poly.flatMap(r => ringPts(r, 0.06))), new THREE.LineBasicMaterial({ color: 0x04f5ff })));
+    const provLine = lineSeg(P.geom.flatMap(poly => poly.flatMap(r => ringPts(r, 0.05))), new THREE.LineBasicMaterial({ color: 0xffffff }));
+    scene.add(provLine);
+    const distLines = lineSeg(D.flatMap(d => d.geom.flatMap(poly => poly.flatMap(r => ringPts(r, 0.04)))), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 }));
+    scene.add(distLines);
 
-    // ---------- units: glowing heads on thin stems ----------
-    const NU = U.length, maxUnitPop = Math.max(...U.map(u => u.pop));
-    U.forEach(u => { u._x = X(u.lon); u._z = Z(u.lat); u._s = 0.32 + 0.45 * Math.sqrt(u.pop / maxUnitPop); u._t = UI.byT[u.tc]; u._dd = UI.byD[u.amp]; u._k = 0; });
-    const heads = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 16, 12), new THREE.MeshBasicMaterial(), NU);
-    const cU = new THREE.Color(UI.TH().unit), cH = new THREE.Color(UI.TH().hosp), cS = new THREE.Color(UI.TH().sel);
-    U.forEach((u, i) => heads.setColorAt(i, u.hosp ? cH : cU));
-    scene.add(heads);
-    const stemPos = new Float32Array(NU * 6);
-    const stems = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(stemPos, 3)), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 }));
-    stems.frustumCulled = false; scene.add(stems);
+    // ---------- units: map pins (sprites) with their tip on the ground / roof ----------
+    const maxUnitPop = Math.max(...U.map(u => u.pop));
+    const pinTex = { unit: new THREE.CanvasTexture(UI.PINS.unit), hosp: new THREE.CanvasTexture(UI.PINS.hosp) };
+    const pinMat = k => new THREE.SpriteMaterial({ map: pinTex[k], transparent: true, depthWrite: false, sizeAttenuation: true });
+    U.forEach((u, i) => {
+      u._x = X(u.lon); u._z = Z(u.lat); u._t = UI.byT[u.tc]; u._dd = UI.byD[u.amp]; u._k = 0; u._ph = (i * 0.618) % 1;
+      u._px = 24 + 16 * Math.sqrt(u.pop / maxUnitPop);
+      const h = UI.byU[u.cup.split(' - ')[0]]; u._hub = h && h !== u ? h : null;
+      const sp = new THREE.Sprite(pinMat(u.hosp ? 'hosp' : 'unit'));
+      sp.center.set(0.5, 6 / 160); sp.visible = false; sp.renderOrder = 5; scene.add(sp); u._sp = sp;
+    });
+    const tipY = u => u._base + 0.05;
+    let pxWorld = 0.1; // world units per screen pixel at the focus distance, refreshed each frame
+    const pinWorldH = u => u._px * pxWorld * (ft && u.tc === ft.code ? 1.25 : 1) * (u === fu ? 1.3 : 1) * u._k;
+    const headY = u => tipY(u) + pinWorldH(u) * 0.6;
+    const selRing = new THREE.Mesh(new THREE.RingGeometry(0.8, 1, 48).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x04f5ff, transparent: true, depthWrite: false }));
+    selRing.visible = false; scene.add(selRing);
 
     // ---------- CUP network: arcs from each unit's hospital to the unit, with a travelling spark ----------
-    U.forEach((u, i) => { const h = UI.byU[u.cup.split(' - ')[0]]; u._hub = h && h !== u ? h : null; u._ph = (i * 0.618) % 1; });
     const SEG = 28, maxArcs = Math.max(...D.map(d => (UI.unitsByD[d.code] || []).length));
     const arcPos = new Float32Array(maxArcs * SEG * 6), arcCol = new Float32Array(maxArcs * SEG * 6);
     const arcGeo = new THREE.BufferGeometry();
@@ -2601,16 +2687,17 @@ const Map3D = (() => {
       gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.25, 'rgba(4,245,255,.9)'); gr.addColorStop(1, 'rgba(4,245,255,0)');
       g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
     })();
-    const sparks = new THREE.Points(sparkGeo, new THREE.PointsMaterial({ map: sparkTex, size: 2.6, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+    const sparkMat = new THREE.PointsMaterial({ map: sparkTex, size: 2.6, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+    const sparks = new THREE.Points(sparkGeo, sparkMat);
     sparks.frustumCulled = false; scene.add(sparks);
     const arcCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3());
     const cHubC = new THREE.Color(0xffd23f), cArc = new THREE.Color(0x04f5ff), cTmp = new THREE.Color(), vA = new THREE.Vector3();
     function updateArcs(now) {
       const list = fd && state.layers.net ? (UI.unitsByD[fd.code] || []).filter(u => u._hub && u._k > 0.05) : [];
       list.forEach((u, a) => {
-        const h = u._hub, p0 = arcCurve.v0.set(h._x, headY(h), h._z), p2 = arcCurve.v2.set(u._x, headY(u), u._z);
+        const h = u._hub, p0 = arcCurve.v0.set(h._x, tipY(h) + 0.2, h._z), p2 = arcCurve.v2.set(u._x, tipY(u) + 0.2, u._z);
         const dist = Math.hypot(p2.x - p0.x, p2.z - p0.z);
-        arcCurve.v1.set((p0.x + p2.x) / 2, Math.max(p0.y, p2.y) + 2 + dist * 0.38, (p0.z + p2.z) / 2);
+        arcCurve.v1.set((p0.x + p2.x) / 2, Math.max(p0.y, p2.y) + 1.5 + dist * 0.35, (p0.z + p2.z) / 2);
         const dim = (ft && u.tc !== ft.code && h.tc !== ft.code ? 0.25 : 1) * u._k;
         for (let i = 0; i < SEG; i++) {
           for (let e = 0; e < 2; e++) {
@@ -2625,8 +2712,8 @@ const Map3D = (() => {
       arcGeo.setDrawRange(0, list.length * SEG * 2); sparkGeo.setDrawRange(0, list.length);
       arcGeo.attributes.position.needsUpdate = arcGeo.attributes.color.needsUpdate = true;
       sparkGeo.attributes.position.needsUpdate = true;
+      sparkMat.size = 12 * pxWorld;
     }
-    const m4 = new THREE.Matrix4(), q0 = new THREE.Quaternion(), v3 = new THREE.Vector3(), s3 = new THREE.Vector3();
 
     // ---------- HTML labels ----------
     const labs = new Map();
@@ -2649,10 +2736,10 @@ const Map3D = (() => {
     // ---------- layout / camera ----------
     let W = 1, H = 1, R = null;
     /** Camera distance that fits an area of the given radius into the free map area. */
-    function fitFor(rad, min = 20, max = 560) {
+    function fitFor(rad, min = 20, max = 600) {
       const f = Math.tan(camera.fov * Math.PI / 360) * 2;
       const fw = (R.right - R.left) / W, fh = (R.bottom - R.top) / H;
-      return clamp(Math.max(2.1 * rad / (f * camera.aspect * fw), 1.85 * rad / (f * fh)), min, max);
+      return clamp(Math.max(2.1 * rad / (f * camera.aspect * fw), 1.75 * rad / (f * fh)), min, max);
     }
     const fitDist = () => fitFor(62, 110);
     function resize() {
@@ -2665,20 +2752,23 @@ const Map3D = (() => {
       camera.updateProjectionMatrix();
     }
     let flight = null;
-    function flyTo(target, dist, polar, dur = 1300) {
+    function flyTo(target, dist, polar, dur = 1400) {
       const fromT = controls.target.clone(), fromP = camera.position.clone();
       const dir = fromP.clone().sub(fromT), az = Math.atan2(dir.x, dir.z);
       const toP = new THREE.Vector3(target.x + dist * Math.sin(polar) * Math.sin(az), target.y + dist * Math.cos(polar), target.z + dist * Math.sin(polar) * Math.cos(az));
       flight = { fromT, fromP, toT: target.clone(), toP, t0: performance.now(), dur: UI.reduceMotion ? 1 : dur };
     }
-    const goalHT = t => (t.pop > 0 ? Math.max(0.6, HT * t[state.metric] / maxTambon()) : 0.35);
     let maxTCache = {};
     const maxTambon = () => (maxTCache[state.metric] ||= Math.max(...T.map(t => t[state.metric])));
+    // tambon blocks are tall in the district view, then flatten when zooming in so the ground and pins stay visible
+    const levelHT = () => (ft ? 1.6 : HT * 0.55);
+    const goalHT = t => (t.pop > 0 ? Math.max(0.25, levelHT() * t[state.metric] / maxTambon()) : 0.15);
+    // a low, tilted camera reads as an aerial photo; deeper levels tilt a little less so pins stay visible
     function frameFocus(dur) {
-      if (fu) flyTo(new THREE.Vector3(fu._x, goalHT(fu._t) + 1, fu._z), 34, 0.72, dur);
-      else if (ft) flyTo(new THREE.Vector3(ft._cx, goalHT(ft) * 0.5, ft._cz), fitFor(ft._rad * 1.6, 45, 200), 0.76, dur);
-      else if (fd) flyTo(new THREE.Vector3(fd._cx, 6, fd._cz), fitFor(fd._rad * 1.1, 70, 300), 0.8, dur);
-      else flyTo(new THREE.Vector3(0, 0, 0), fitDist(), 0.88, dur);
+      if (fu) flyTo(new THREE.Vector3(fu._x, 1, fu._z), 22, 0.95, dur);
+      else if (ft) flyTo(new THREE.Vector3(ft._cx, 1, ft._cz), fitFor(ft._rad * 1.25, 25, 200), 0.95, dur);
+      else if (fd) flyTo(new THREE.Vector3(fd._cx, 3, fd._cz), fitFor(fd._rad * 0.95, 60, 300), 0.98, dur);
+      else flyTo(new THREE.Vector3(0, 0, 4), fitDist(), 1.02, dur);
     }
     function zoom(f) {
       UI.stopTour();
@@ -2703,7 +2793,6 @@ const Map3D = (() => {
       else UI.focus({ [picked.kind]: picked.code });
     });
     const project = (x, y, z) => { pv.set(x, y, z).project(camera); return [(pv.x + 1) / 2 * W, (1 - pv.y) / 2 * H, pv.z]; };
-    const headY = u => u._base + u._s * 1.6 * u._k + 1.2 * u._k;
     function pick(showTip) {
       ndc.set(mouse.x / W * 2 - 1, -(mouse.y / H) * 2 + 1);
       ray.setFromCamera(ndc, camera);
@@ -2714,7 +2803,7 @@ const Map3D = (() => {
           if (u._k < 0.5) continue;
           const [sx, sy, sz] = project(u._x, headY(u), u._z);
           const dd = Math.hypot(sx - mouse.x, sy - mouse.y);
-          if (sz < 1 && dd < 12 && dd < best) { best = dd; hit = { kind: 'u', code: u.code }; }
+          if (sz < 1 && dd < u._px * 0.45 + 4 && dd < best) { best = dd; hit = { kind: 'u', code: u.code }; }
         }
       }
       const vis = pickables.filter(m => m.parent.visible && m.parent.scale.y > 0.05);
@@ -2730,13 +2819,10 @@ const Map3D = (() => {
 
     // ---------- UI events ----------
     UI.on('hover', h => { hov = h; });
-    UI.on('focus', f => { fd = f.d; ft = f.t; fu = f.u; if (active) { resize(); frameFocus(); } });
+    UI.on('focus', f => { fd = f.d; ft = f.t; fu = f.u; if (active) { resize(); applyDetail(); frameFocus(); } });
     UI.on('metric', () => { maxTCache = {}; labelText(); });
     UI.on('base', () => { if (active) applyBase(); });
-    UI.on('layer', (k, v) => {
-      if (k === 'units') heads.visible = stems.visible = v;
-      if (k === 'labels') labelsEl.style.visibility = v ? '' : 'hidden';
-    });
+    UI.on('layer', (k, v) => { if (k === 'labels') labelsEl.style.visibility = v ? '' : 'hidden'; });
     UI.on('layout', () => { if (active) resize(); });
 
     // ---------- frame ----------
@@ -2748,10 +2834,11 @@ const Map3D = (() => {
       x._g.visible = x._h > 0.02;
       x._g.scale.y = Math.max(0.001, x._h);
       x._col.set(col);
-      x._roof.color.lerp(x._col, k); x._wall.color.copy(x._roof.color).multiplyScalar(0.72);
+      x._roof.color.lerp(x._col, k); x._wall.color.copy(x._roof.color).multiplyScalar(0.7);
       x._roof.opacity = x._wall.opacity = x._op;
       x._roof.depthWrite = x._wall.depthWrite = x._op > 0.98;
-      x._roof.emissive.setScalar(isHov(x._mesh.userData.kind, x.code) ? 0.14 : 0);
+      x._mesh.castShadow = x._op > 0.5;
+      x._roof.emissive.setScalar(isHov(x._mesh.userData.kind, x.code) ? 0.16 : 0);
       x._top.material.color.set(lineCol); x._top.material.opacity = lineOp * Math.min(1, x._op + 0.2);
     }
     function placeLabels() {
@@ -2762,14 +2849,12 @@ const Map3D = (() => {
       else if (fd) order = [...UI.tambonsBy[fd.code]].sort((a, b) => b[m] - a[m]);
       else order = [...D].sort((a, b) => b[m] - a[m]);
       const want = new Set(order.filter(Boolean));
-      labs.forEach((L, x) => {
-        if (!want.has(x)) { if (L.shown) { L.el.style.opacity = 0; L.shown = false; } return; }
-      });
+      labs.forEach((L, x) => { if (!want.has(x) && L.shown) { L.el.style.opacity = 0; L.shown = false; } });
       for (const x of order) {
         if (!x) continue;
         const L = labs.get(x);
         if (!L.measured) { L.w = L.el.offsetWidth || 60; L.h = L.el.offsetHeight || 36; L.measured = true; }
-        const y = L.kind === 'u' ? headY(x) + x._s + 0.8 : x._h + 0.5;
+        const y = L.kind === 'u' ? tipY(x) + pinWorldH(x) * 1.05 : x._h + 0.5;
         const px = L.kind === 'u' ? x._x : x._lx, pz = L.kind === 'u' ? x._z : x._lz;
         const [sx, sy, sz] = project(px, y, pz);
         const box = [sx - L.w / 2, sy - L.h - 6, sx + L.w / 2, sy - 6];
@@ -2786,7 +2871,7 @@ const Map3D = (() => {
       requestAnimationFrame(frame);
       // rAF timestamps can precede the performance.now() taken in activate(), so never let dt go negative
       const dt = clamp((now - last) / 1000, 0, 0.05); last = now;
-      const k = 1 - Math.pow(0.004, dt), m = state.metric;
+      const k = 1 - Math.pow(0.004, dt), m = state.metric, th = UI.TH();
       if (flight) {
         const e = easeIO((now - flight.t0) / flight.dur);
         controls.target.lerpVectors(flight.fromT, flight.toT, e);
@@ -2794,32 +2879,44 @@ const Map3D = (() => {
         if (e >= 1) flight = null;
       }
       controls.update();
+      // haze and sun follow the camera so the scene always has depth and crisp shadows near the focus
+      const dist = camera.position.distanceTo(controls.target);
+      scene.fog.near = dist * 1.15; scene.fog.far = dist * 3.4;
+      pxWorld = 2 * dist * Math.tan(camera.fov * Math.PI / 360) / H;
+      const span = clamp(dist * 0.75, 12, 140);
+      sun.position.copy(controls.target).addScaledVector(SUN_DIR, span * 2.2); sun.target.position.copy(controls.target);
+      Object.assign(sun.shadow.camera, { left: -span, right: span, top: span, bottom: -span, near: 1, far: span * 5 });
+      sun.shadow.camera.updateProjectionMatrix();
+
       const maxD = Math.max(...D.map(d => d[m]));
       for (const d of D) {
-        const goal = fd ? (d === fd ? 0 : 0.5) : Math.max(0.6, HD * d[m] / maxD);
-        updateArea(d, goal, fd ? 0.55 : 1, fd ? UI.TH().other : UI.colorD(d, m), 0xffffff, fd ? 0.3 : 0.85, k);
+        const goal = fd ? (d === fd ? 0 : 0.35) : Math.max(0.6, HD * d[m] / maxD);
+        updateArea(d, goal, fd ? 0.45 : 0.94, fd ? th.other : UI.colorD(d, m), 0xffffff, fd ? 0.25 : 0.9, k);
       }
       for (const t of T) {
         const inD = fd && t.amp === fd.code;
-        const col = UI.colorT(t, m);
-        updateArea(t, inD ? goalHT(t) : 0, ft && t !== ft ? 0.5 : 1, col, t === ft ? 0x04f5ff : 0xffffff, t === ft ? 1 : 0.7, k);
+        updateArea(t, inD ? goalHT(t) : 0, ft ? (t === ft ? 0.6 : 0.38) : 0.95, UI.colorT(t, m), t === ft ? 0x04f5ff : 0xffffff, t === ft ? 1 : 0.75, k);
       }
-      // units
-      for (let i = 0; i < NU; i++) {
-        const u = U[i];
+      distLines.visible = !fd;
+      for (const u of U) {
         const show = state.layers.units && fd && u.amp === fd.code;
         u._k += ((show ? 1 : 0) - u._k) * k;
-        u._base = fd ? u._t._h : u._dd._h;
-        const big = (ft && u.tc === ft.code ? 1.6 : 1) * (u === fu ? 1.3 + 0.15 * Math.sin(now / 180) : 1);
-        v3.set(u._x, headY(u), u._z); s3.setScalar(Math.max(0.0001, u._s * big * u._k));
-        heads.setMatrixAt(i, m4.compose(v3, q0, s3));
-        heads.setColorAt(i, u === fu ? cS : u.hosp ? cH : cU);
-        stemPos.set([u._x, u._base, u._z, u._x, u._k > 0.05 ? headY(u) : u._base, u._z], i * 6);
+        u._base = u._t._h;
+        const sp = u._sp, h = pinWorldH(u);
+        sp.visible = u._k > 0.02;
+        if (sp.visible) {
+          sp.position.set(u._x, tipY(u), u._z); sp.scale.set(h * 0.75, h, 1);
+          sp.material.opacity = ft && u.tc !== ft.code ? 0.55 : 1;
+        }
       }
-      heads.instanceMatrix.needsUpdate = true; heads.instanceColor.needsUpdate = true;
-      stems.geometry.attributes.position.needsUpdate = true;
+      if (fu) {
+        selRing.visible = true;
+        const r = 6 * pxWorld * (1 + 0.35 * ((now / 900) % 1));
+        selRing.position.set(fu._x, tipY(fu) + 0.03, fu._z); selRing.scale.setScalar(r);
+        selRing.material.opacity = 1 - ((now / 900) % 1);
+      } else selRing.visible = false;
       updateArcs(now);
-      for (const b in bases) { const o = bases[b]; if (o.dirty && now - o.lastUp > 300) { o.tex.needsUpdate = true; o.dirty = false; o.lastUp = now; } }
+      for (const o of sheets) if (o.dirty && now - o.lastUp > 250) { o.tex.needsUpdate = true; o.dirty = false; o.lastUp = now; }
       if (mouse.dirty && mouse.in && !down) { mouse.dirty = false; pick(!mouse.touch); }
       placeLabels();
       if (UI.calloutVisible()) {
@@ -2827,7 +2924,7 @@ const Map3D = (() => {
           let p;
           if (tg.kind === 'd') { const d = UI.byD[tg.code]; p = project(d._lx, d._h + 0.5, d._lz); }
           else if (tg.kind === 't') { const t = UI.byT[tg.code]; p = project(t._lx, t._h + 0.5, t._lz); }
-          else { const u = UI.byU[tg.code]; p = project(u._x, headY(u), u._z); }
+          else { const u = UI.byU[tg.code]; p = project(u._x, tipY(u), u._z); }
           return p[2] < 1 && p[0] > -20 && p[0] < W + 20 && p[1] > -20 && p[1] < H + 20 ? [p[0], p[1]] : null;
         }));
       }
@@ -2838,10 +2935,9 @@ const Map3D = (() => {
     function activate() {
       active = true;
       labelsEl.style.visibility = state.layers.labels ? '' : 'hidden';
-      heads.visible = stems.visible = state.layers.units;
       fd = UI.byD[state.d] || null; ft = UI.byT[state.t] || null; fu = UI.byU[state.u] || null; hov = null;
       resize(); labelText(); applyBase();
-      frameFocus(first ? 1800 : 900); first = false;
+      frameFocus(first ? 2200 : 900); first = false;
       if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
     }
     function deactivate() { active = false; mouse.in = false; down = null; }
@@ -2863,7 +2959,8 @@ const Map3D = (() => {
 /* App shell: switch between 2D and 3D (#3d in the URL opens 3D) and wire the map buttons. */
 (() => {
   const maps = { '2d': Map2D, '3d': Map3D };
-  const fromHash = () => (location.hash.toLowerCase() === '#3d' ? '3d' : '2d');
+  // desktop opens in the realistic 3D view, phones in 2D; #2d / #3d in the URL override
+  const fromHash = () => { const h = location.hash.toLowerCase(); return h === '#3d' ? '3d' : h === '#2d' ? '2d' : UI.isMobile() ? '2d' : '3d'; };
   let cur = null, ready = false;
 
   function apply(v) {
