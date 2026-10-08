@@ -211,11 +211,46 @@ details.more .coordbox{background:#fff}
 .attr{position:absolute;right:0;bottom:0;z-index:6;padding:1px 8px;font-size:11px;color:rgba(255,255,255,.6);background:rgba(26,4,32,.75);border-top-left-radius:6px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .attr:empty{display:none}
 
+/* map graphics: hex texture, callout card, leader lines */
+.fx-hex{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='48.5' viewBox='0 0 28 48.5'%3E%3Cpath d='M14 0l14 8.08v16.17L14 32.33 0 24.25V8.08zM14 32.33v16.17' fill='none' stroke='%2304f5ff' stroke-width='.7'/%3E%3C/svg%3E");
+  -webkit-mask-image:radial-gradient(ellipse 75% 70% at 55% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 75% 70% at 55% 50%,#000 30%,transparent 100%)}
+#leaders{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none;overflow:visible}
+#leaders path{fill:none;stroke:#04f5ff;stroke-width:1.6;filter:drop-shadow(0 0 3px rgba(4,245,255,.8))}
+#leaders .ring{fill:none;stroke:#04f5ff;stroke-width:1.5;opacity:.55}
+#leaders .pin{fill:#04f5ff;filter:drop-shadow(0 0 4px #04f5ff)}
+.callout{position:absolute;left:18px;top:60px;z-index:6;width:240px;background:rgba(36,0,40,.9);border-radius:16px;padding:13px 15px 14px;color:#fff;
+  box-shadow:0 12px 30px rgba(0,0,0,.4);backdrop-filter:blur(10px);border:1px solid rgba(4,245,255,.25);overflow:hidden}
+.callout::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(#04f5ff,#00ff85)}
+.callout:empty{display:none}
+.callout.enter{animation:coin .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes coin{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}
+.co-k{font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:.06em;color:#04f5ff;text-transform:uppercase}
+.co-t{font-family:var(--head);font-weight:800;font-size:20px;line-height:1.2;margin-top:2px}
+.co-v{font-family:var(--head);font-weight:800;font-size:28px;line-height:1.1;color:#00ff85;margin-top:4px;font-variant-numeric:tabular-nums}
+.co-v small{font-family:var(--font);font-weight:400;font-size:13px;color:rgba(255,255,255,.7)}
+.co-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.14);margin-top:8px;overflow:hidden}
+.co-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#04f5ff,#00ff85);transform-origin:left;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
+.co-s{font-size:12.5px;color:rgba(255,255,255,.75);margin-top:3px}
+.co-sub{font-family:var(--head);font-weight:600;font-size:12.5px;color:rgba(255,255,255,.6);margin:11px 0 4px;padding-top:9px;border-top:1px solid rgba(255,255,255,.12)}
+.co-r{display:grid;grid-template-columns:18px 1fr auto;grid-template-rows:auto 4px;column-gap:7px;row-gap:3px;align-items:center;padding:4px 0}
+.co-r .co-n{font-family:var(--head);font-weight:800;font-size:13px;color:#04f5ff}
+.co-r .co-nm{font-family:var(--head);font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.co-r b{font-family:var(--head);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.co-r i{grid-column:2/4;height:4px;border-radius:2px;background:linear-gradient(90deg,#00ff85,#04f5ff);transform-origin:left;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
+.co-f{font-size:12.5px;color:rgba(255,255,255,.65);margin-top:8px}
+.co-f b{color:#ff5fa2;font-weight:600}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.keys .bub{width:14px;height:14px;border-radius:50%;border:2px solid #00ff85;background:rgba(36,0,40,.9);display:inline-block;box-shadow:0 0 6px rgba(0,255,133,.6)}
+.keys .net{width:22px;height:2px;background:#04f5ff;display:inline-block;box-shadow:0 0 5px #04f5ff;border-radius:1px}
+
 /* 3D labels */
 .l3{position:absolute;left:0;top:0;background:#fff;border-radius:8px;padding:2px 10px 3px;text-align:center;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.35);will-change:transform;opacity:0;transition:opacity .2s;border-left:4px solid var(--green)}
 .l3 b{display:block;font-family:var(--head);font-weight:700;font-size:13.5px;line-height:1.35;color:var(--purple)}
 .l3 span{display:block;font-family:var(--head);font-size:12.5px;color:var(--ink2);line-height:1.25;font-variant-numeric:tabular-nums}
 .l3.sel{background:var(--purple);border-left-color:var(--cyan)}
+.l3 .rk{display:inline-block;min-width:18px;margin-right:5px;padding:0 4px;border-radius:5px;background:var(--purple);color:var(--green);font-style:normal;font-size:12px;line-height:17px;vertical-align:1px}
+.l3.sel .rk{background:var(--green);color:var(--purple)}
 .l3.sel b{color:#fff}.l3.sel span{color:var(--green)}
 
 /* ---------- tooltip / toast / loading ---------- */
@@ -255,6 +290,7 @@ details.more .coordbox{background:#fff}
   .sheet{display:inline-flex;align-items:center;justify-content:center}
   .legend{bottom:22px;left:10px;width:calc(100% - 20px);padding:9px 12px 8px}
   .legend .keys,.legend .ltitle{display:none}
+  .callout,#leaders{display:none}
   .lhead{margin-bottom:6px}
   .hint{top:10px;left:10px;font-size:13px;max-width:calc(100% - 70px)}
   .coords{display:none}
@@ -300,8 +336,11 @@ details.more .coordbox{background:#fff}
     <canvas id="map2d" aria-label="แผนที่ 2 มิติ"></canvas>
     <div id="map3d" aria-label="แผนที่ 3 มิติ"></div>
     <div id="labels3d" aria-hidden="true"></div>
+    <div class="fx-hex" aria-hidden="true"></div>
+    <svg id="leaders" aria-hidden="true"></svg>
 
     <div class="hint" id="hint" role="status"></div>
+    <aside class="callout" id="callout" aria-label="สรุปบนแผนที่"></aside>
     <div class="mapctl" role="group" aria-label="ควบคุมแผนที่">
       <button id="zIn" aria-label="ซูมเข้า" title="ซูมเข้า">+</button>
       <button id="zOut" aria-label="ซูมออก" title="ซูมออก">−</button>
@@ -1417,7 +1456,7 @@ const UI = (() => {
   const TH = () => THEME;
   const state = {
     view: '2d', base: 'plain', metric: 'pop', d: null, t: null, u: null, hov: null, tour: false,
-    layers: { units: true, labels: true, grid: false },
+    layers: { units: true, labels: true, net: true, bubbles: true, grid: false },
   };
   const niceRound = v => { const p = 10 ** Math.floor(Math.log10(v) - 1); return Math.round(v / p) * p; };
   const quantBreaks = vals => { const s = vals.filter(v => v > 0).sort((a, b) => a - b); return [0.2, 0.4, 0.6, 0.8].map(q => niceRound(s[Math.floor(q * (s.length - 1))])); };
@@ -1461,12 +1500,14 @@ const UI = (() => {
   // ---------- layout ----------
   const mapwrap = $('#mapwrap'), panel = $('#panel'), pbody = $('#pbody');
   const isMobile = () => innerWidth <= 860;
-  /** Free map area in map-local pixels (clear of the hint, map buttons and legend). */
+  const calloutVisible = () => !isMobile() && state.layers.labels;
+  /** Free map area in map-local pixels (clear of the hint, callout card, map buttons and legend). */
   function safeRect() {
     const W = mapwrap.clientWidth, H = mapwrap.clientHeight;
     const top = isMobile() ? 50 : 58;
     const bottom = H - Math.min($('.legend').offsetHeight + 44, H * 0.36);
-    return { left: 16, right: W - 64, top, bottom: Math.max(top + 110, bottom) };
+    const left = calloutVisible() ? 18 + $('#callout').offsetWidth + 22 : 16;
+    return { left, right: W - 64, top, bottom: Math.max(top + 110, bottom) };
   }
 
   // ---------- basemap tiles ----------
@@ -1675,7 +1716,11 @@ const UI = (() => {
     $('#legendTitle').textContent = `สีของ${kind === 'd' ? 'อำเภอ' : 'ตำบล'} (${M.unit})`;
     $('#legendBody').innerHTML = `<div class="ramp">${THEME.colors.map(c => `<i style="background:${c}"></i>`).join('')}</div>
       <div class="ticks">${[lo, ...b, hi].map(v => `<span>${M.fmt(v)}</span>`).join('')}</div>
-      ${state.d ? `<div class="keys"><span><i class="dot"></i>รพ.สต.</span><span><i class="dia"></i>รพ. / ศูนย์บริการ</span><span><i class="nod"></i>ไม่มีหน่วยบริการ</span><span>ขนาดจุด = จำนวนคน</span></div>` : ''}`;
+      ${state.d
+        ? `<div class="keys"><span><i class="dot"></i>รพ.สต.</span><span><i class="dia"></i>รพ. / ศูนย์บริการ</span><span><i class="net"></i>เชื่อมกับโรงพยาบาลแม่ข่าย (CUP)</span><span><i class="nod"></i>ไม่มีหน่วยบริการ</span></div>`
+        : state.view === '3d'
+          ? `<div class="keys"><span>ความสูงแท่ง = ${M.short} · ตัวเลขในป้าย = อันดับ</span></div>`
+          : `<div class="keys"><span><i class="bub"></i>ขนาดวงกลม = ${M.short} · ตัวเลข = อันดับ</span></div>`}`;
   }
   const HINTS = {
     province: 'คลิก <b>อำเภอ</b> บนแผนที่หรือในตาราง เพื่อดูอันดับตำบล',
@@ -1691,6 +1736,73 @@ const UI = (() => {
     } else el.innerHTML = HINTS[level()];
   }
 
+  // ---------- callout card on the map + leader lines to the places it describes ----------
+  const coEl = $('#callout'), leadersEl = $('#leaders');
+  let targets = [], starts = [];
+  const bars = (items, val, fmt, name) => {
+    const max = Math.max(1, ...items.map(val));
+    return items.map((x, i) => `<div class="co-r"><span class="co-n">${i + 1}</span><span class="co-nm">${esc(name(x))}</span><b>${fmt(val(x))}</b><i style="width:${(val(x) / max * 100).toFixed(1)}%;animation-delay:${120 + i * 80}ms"></i></div>`).join('');
+  };
+  function renderCallout() {
+    if (!calloutVisible()) { coEl.innerHTML = ''; targets = []; drawLeaders([]); return; }
+    const m = state.metric, M = METRICS[m], lv = level();
+    let h = '';
+    if (lv === 'province') {
+      const ds = sorted(D, m), top = ds.slice(0, 3), low = ds[ds.length - 1], max = top[0][m];
+      targets = top.map(d => ({ kind: 'd', code: d.code }));
+      h = `<div class="co-k">3 อันดับแรก · ${M.short}</div>
+        ${top.map((d, i) => `<div class="co-r" data-lead="${i}"><span class="co-n">${i + 1}</span><span class="co-nm">อ.${esc(d.th)}</span><b>${M.fmt(d[m])}</b><i style="width:${(d[m] / max * 100).toFixed(1)}%;animation-delay:${120 + i * 80}ms"></i></div>`).join('')}
+        <div class="co-f">อันดับท้าย: <b>อ.${esc(low.th)}</b> ${M.fmt(low[m])} ${M.unit}</div>`;
+    } else if (lv === 'district') {
+      const d = byD[state.d], ts = sorted(tambonsBy[d.code], 'pop').filter(t => t.pop).slice(0, 3);
+      targets = []; // the whole map is this district — no leader needed
+      h = `<div class="co-k">อำเภอ · อันดับ ${rankIn(D, d, m)}/20</div><div class="co-t">อ.${esc(d.th)}</div>
+        <div class="co-v">${M.fmt(d[m])} <small>${M.unit}</small></div>
+        <div class="co-bar"><i style="width:${(d.pop / TOTAL * 100).toFixed(1)}%"></i></div><div class="co-s">${(d.pop / TOTAL * 100).toFixed(1)}% ของผู้มีสิทธิทั้งจังหวัด</div>
+        <div class="co-sub">ตำบลที่มีผู้ลงทะเบียนมากที่สุด</div>${bars(ts, t => t.pop, v => nf0.format(v), t => `ต.${t.th}`)}`;
+    } else if (lv === 'tambon') {
+      const t = byT[state.t], d = byD[t.amp], us = sorted(unitsByT[t.code] || [], 'pop').slice(0, 3);
+      targets = [{ kind: 't', code: t.code }];
+      h = `<div class="co-k">ตำบล · อันดับ ${t.pop ? rankIn(tambonsBy[d.code], t, 'pop') : '–'}/${tambonsBy[d.code].length}</div><div class="co-t" data-lead="0">ต.${esc(t.th)}</div>
+        <div class="co-v">${nf0.format(t.pop)} <small>คน</small></div>
+        <div class="co-bar"><i style="width:${(t.pop / d.pop * 100).toFixed(1)}%"></i></div><div class="co-s">${(t.pop / d.pop * 100).toFixed(1)}% ของอำเภอ${esc(d.th)}</div>
+        ${us.length ? `<div class="co-sub">หน่วยบริการในตำบล</div>${bars(us, u => u.pop, v => nf0.format(v), u => shortName(u.name))}` : '<div class="co-f">ไม่มีหน่วยบริการตั้งอยู่ในตำบลนี้</div>'}`;
+    } else {
+      const u = byU[state.u], d = byD[u.amp], hub = byU[u.cup.split(' - ')[0]];
+      targets = [{ kind: 'u', code: u.code }];
+      h = `<div class="co-k">${u.hosp ? 'โรงพยาบาล / ศูนย์บริการ' : 'รพ.สต.'} · อันดับ ${rankIn(unitsByD[d.code], u, 'pop')}/${unitsByD[d.code].length}</div><div class="co-t" data-lead="0">${esc(shortName(u.name))}</div>
+        <div class="co-v">${nf0.format(u.pop)} <small>คน</small></div>
+        <div class="co-bar"><i style="width:${(u.pop / d.pop * 100).toFixed(1)}%"></i></div><div class="co-s">${(u.pop / d.pop * 100).toFixed(1)}% ของอำเภอ${esc(d.th)}</div>
+        <div class="co-f">${hub && hub !== u ? `แม่ข่าย: <b style="color:#04f5ff">${esc(shortName(hub.name))}</b>` : 'เป็นโรงพยาบาลแม่ข่ายของอำเภอ'}</div>`;
+    }
+    coEl.innerHTML = h;
+    coEl.classList.remove('enter'); void coEl.offsetWidth; coEl.classList.add('enter');
+    measureStarts();
+  }
+  function measureStarts() {
+    const base = mapwrap.getBoundingClientRect(), card = coEl.getBoundingClientRect();
+    starts = [...coEl.querySelectorAll('[data-lead]')].map(el => { const r = el.getBoundingClientRect(); return [card.right - base.left, r.top + r.height / 2 - base.top]; });
+  }
+  const leadEls = [];
+  /** Draw leader lines from the card rows to screen points supplied by the active map (null = hide). */
+  function drawLeaders(pts) {
+    while (leadEls.length < 3) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.innerHTML = '<path/><circle class="ring" r="9"/><circle class="pin" r="3.6"/>';
+      leadersEl.appendChild(g); leadEls.push(g);
+    }
+    leadEls.forEach((g, i) => {
+      const p = pts && pts[i], s = starts[i];
+      if (!p || !s) { g.style.display = 'none'; return; }
+      g.style.display = '';
+      const [ax, ay] = p, [sx, sy] = s, kx = sx + 16;
+      g.children[0].setAttribute('d', `M${sx.toFixed(1)} ${sy.toFixed(1)}H${kx.toFixed(1)}L${ax.toFixed(1)} ${ay.toFixed(1)}`);
+      g.children[1].setAttribute('cx', ax); g.children[1].setAttribute('cy', ay);
+      g.children[2].setAttribute('cx', ax); g.children[2].setAttribute('cy', ay);
+    });
+  }
+  on('layout', () => { if (calloutVisible() && !coEl.innerHTML) renderCallout(); else if (!calloutVisible() && coEl.innerHTML) renderCallout(); else measureStarts(); });
+
   // ---------- focus / hover / settings ----------
   function focus(f = {}, src) {
     let { d = null, t = null, u = null } = f;
@@ -1698,7 +1810,7 @@ const UI = (() => {
     if (src !== 'tour') stopTour();
     if (d === state.d && t === state.t && u === state.u) return;
     Object.assign(state, { d, t, u });
-    renderPanel(); renderCrumbs(); renderLegend(); renderHint();
+    renderPanel(); renderCrumbs(); renderLegend(); renderHint(); renderCallout();
     if (isMobile() && src !== 'tour') panel.classList.remove('min');
     emit('focus', { level: level(), d: byD[d] || null, t: byT[t] || null, u: byU[u] || null });
     emit('layout');
@@ -1716,7 +1828,7 @@ const UI = (() => {
   function setMetric(m) {
     if (state.metric === m) return;
     state.metric = m; segSet('#metricSeg', 'm', m);
-    renderPanel(); renderLegend();
+    renderPanel(); renderLegend(); renderCallout();
     emit('metric', m);
   }
   const setAttr = () => { const k = baseKey(); $('#attr').textContent = k ? BASES[k].attr : ''; };
@@ -1729,16 +1841,20 @@ const UI = (() => {
     state.view = v; segSet('#viewSeg', 'view', v);
     document.body.classList.toggle('view-2d', v === '2d');
     document.body.classList.toggle('view-3d', v === '3d');
-    tip(null); cursor(null);
+    tip(null); cursor(null); renderLegend(); drawLeaders([]);
   }
   segBind('#metricSeg', 'm', setMetric);
   segBind('#baseSeg', 'b', setBase);
   segBind('#viewSeg', 'view', v => emit('viewRequest', v));
 
   const pop = $('#layersPop'), btnLayers = $('#btnLayers');
-  $('#layers').innerHTML = [['units', 'จุดหน่วยบริการ (รพ.สต. / รพ.)'], ['labels', 'ชื่อพื้นที่และตัวเลข'], ['grid', 'เส้นละติจูด/ลองจิจูด (2D)']]
+  $('#layers').innerHTML = [['bubbles', 'วงกลมอันดับอำเภอ'], ['units', 'จุดหน่วยบริการ (รพ.สต. / รพ.)'], ['net', 'เส้นเครือข่ายโรงพยาบาลแม่ข่าย'], ['labels', 'ชื่อพื้นที่ ตัวเลข และการ์ดสรุป'], ['grid', 'เส้นละติจูด/ลองจิจูด (2D)']]
     .map(([k, t]) => `<label class="chk"><input type="checkbox" data-k="${k}"${state.layers[k] ? ' checked' : ''}>${t}</label>`).join('');
-  $('#layers').addEventListener('change', e => { const k = e.target.dataset.k; if (k) { state.layers[k] = e.target.checked; emit('layer', k, e.target.checked); } });
+  $('#layers').addEventListener('change', e => {
+    const k = e.target.dataset.k; if (!k) return;
+    state.layers[k] = e.target.checked; emit('layer', k, e.target.checked);
+    if (k === 'labels') { renderCallout(); emit('layout'); }
+  });
   btnLayers.addEventListener('click', () => { pop.hidden = !pop.hidden; btnLayers.setAttribute('aria-expanded', !pop.hidden); });
   document.addEventListener('pointerdown', e => { if (!pop.hidden && !pop.contains(e.target) && e.target !== btnLayers) { pop.hidden = true; btnLayers.setAttribute('aria-expanded', false); } });
   $('#btnSheet').addEventListener('click', () => { panel.classList.toggle('min'); setTimeout(() => emit('layout'), 320); });
@@ -1863,12 +1979,13 @@ const UI = (() => {
   }
 
   // ---------- init ----------
-  setAttr(); renderPanel(); renderCrumbs(); renderLegend(); renderHint();
+  setAttr(); renderPanel(); renderCrumbs(); renderLegend(); renderHint(); renderCallout();
   addEventListener('resize', () => emit('layout'));
 
   return {
     D, T, U, P, byD, byT, byU, tambonsBy, unitsByT, unitsByD, shortName, state, METRICS, TH, level, colorD, colorT, on, emit,
     focus, up, hover, tipFor, setView, cursor, tip, toast, stopTour, safeRect, isMobile, districtAt, tambonAt,
+    calloutVisible, calloutTargets: () => targets, drawLeaders, rankIn, sorted,
     fontsReady, reduceMotion, nf0, nf1, BASES, baseKey, tile, tileCached, lon2tx, lat2ty, tx2lon, ty2lat,
   };
 })();
@@ -1912,7 +2029,9 @@ const Map2D = (() => {
     gr.addColorStop(0, `rgba(${rgb},.9)`); gr.addColorStop(0.3, `rgba(${rgb},.35)`); gr.addColorStop(1, `rgba(${rgb},0)`);
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return c;
   }
-  const GLOW_U = glowSprite('255,45,135'), GLOW_H = glowSprite('255,210,63');
+  const GLOW_U = glowSprite('255,45,135'), GLOW_H = glowSprite('255,210,63'), GLOW_C = glowSprite('4,245,255');
+  // each unit's main CUP hospital ("hub"); the hospital row itself has no hub
+  U.forEach((u, i) => { const h = UI.byU[u.cup.split(' - ')[0]]; u._hub = h && h !== u ? h : null; u._ph = (i * 0.618) % 1; });
 
   // ---------- view ----------
   let W = 0, H = 0, dpr = 1, fitS = 1, unitScale = 1, R = { left: 0, right: 0, top: 0, bottom: 0 }, A = [0, 0];
@@ -2015,6 +2134,7 @@ const Map2D = (() => {
       const dd = Math.hypot(sx - mouse.x, sy - mouse.y);
       if (dd < Math.max(10, unitR(u) + 5) && dd < best) { best = dd; hit = { kind: 'u', code: u.code }; }
     }
+    if (!hit && !fd) for (const d of D) if (d._bub && Math.hypot(mouse.x - d._bub[0], mouse.y - d._bub[1]) <= d._bub[2]) { hit = { kind: 'd', code: d.code }; break; }
     if (!hit) {
       const [lon, lat] = inv(...toW(mouse.x, mouse.y));
       const d = UI.districtAt(lat, lon);
@@ -2183,17 +2303,18 @@ const Map2D = (() => {
   function drawLabels() {
     screenTf();
     ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-    const m = state.metric, M = UI.METRICS[m], placed = [];
+    const m = state.metric, M = UI.METRICS[m], placed = [], co = UI.calloutVisible();
+    for (const d of D) if (d._bub) placed.push([d._bub[0] - d._bub[2], d._bub[1] - d._bub[2], d._bub[0] + d._bub[2], d._bub[1] + d._bub[2]]);
     const tLabel = (tb, force) => {
       const [sx, sy] = toS(tb._lab[0], tb._lab[1]);
       label(`ต.${tb.th}`, tb.pop ? M.fmt(tb[m]) : 'ไม่มีหน่วยบริการ', sx, sy, placed, force, { font: F(600, tb === ft ? 15.5 : 13.5), color: tb === ft ? UI.TH().sel : null });
     };
     // priority: selected unit, selected tambon, its units, then the other tambons and districts
-    if (fu) {
+    if (fu && !co) {
       const [sx, sy] = toS(fu._xy[0], fu._xy[1]);
       label(UI.shortName(fu.name), `${UI.nf0.format(fu.pop)} คน`, sx, sy - unitR(fu) * 1.2 - 26, placed, true, { font: F(700, 16), subColor: UI.TH().sel });
     }
-    if (ft && !fu) tLabel(ft, true);
+    if (ft && !fu && !co) tLabel(ft, true);
     if (ft) {
       for (const u of UI.unitsByT[ft.code] || []) {
         if (u === fu) continue;
@@ -2205,8 +2326,8 @@ const Map2D = (() => {
     const ds = [...D].sort((a, b) => b[m] - a[m]);
     for (const d of ds) {
       if (d === fd) continue;
-      const [sx, sy] = toS(d._lab[0], d._lab[1]);
-      label(fd ? `อ.${d.th}` : d.th, fd ? null : M.fmt(d[m]), sx, sy, placed, false, fd ? { font: F(500, 13), alpha: 0.55 } : {});
+      const [sx, sy] = toS(d._lab[0], d._lab[1]), dy = d._bub ? d._bub[2] + 19 : 0;
+      label(fd ? `อ.${d.th}` : d.th, fd ? null : M.fmt(d[m]), sx, sy + dy, placed, false, fd ? { font: F(500, 13), alpha: 0.55 } : {});
     }
   }
 
@@ -2219,6 +2340,76 @@ const Map2D = (() => {
     ctx.beginPath(); ctx.moveTo(x, y - 6); ctx.lineTo(x, y); ctx.lineTo(x + len, y); ctx.lineTo(x + len, y - 6); ctx.stroke();
     ctx.font = F(600, 12.5); ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
     ctx.lineWidth = 3; ctx.strokeStyle = UI.TH().halo; ctx.strokeText(`${km} กม.`, x + len / 2, y - 8); ctx.fillText(`${km} กม.`, x + len / 2, y - 8);
+  }
+
+  // ---------- in-map graphics ----------
+  const TIER = i => (i < 4 ? '#00ff85' : i >= D.length - 3 ? '#ff2d87' : '#04f5ff');
+  /** Province view: one bubble per district (area ∝ value) with its rank; the top 3 pulse. */
+  function drawBubbles(t) {
+    D.forEach(d => (d._bub = null));
+    if (fd || !state.layers.bubbles) return;
+    screenTf();
+    const m = state.metric, ds = UI.sorted(D, m), max = ds[0][m];
+    const rMax = clamp(31 * Math.sqrt(view.s / fitS), 14, 64) * unitScale;
+    ds.forEach((d, i) => {
+      const [sx, sy] = toS(d._lab[0], d._lab[1]);
+      const r = Math.max(9, rMax * Math.sqrt(d[m] / max)), col = TIER(i);
+      const isHov = hov && hov.kind === 'd' && hov.code === d.code;
+      d._bub = [sx, sy, r];
+      if (i < 3 && !UI.reduceMotion) {
+        ctx.strokeStyle = col; ctx.lineWidth = 2;
+        for (const off of [0, 0.5]) {
+          const ph = (t / 2600 + off + i * 0.17) % 1;
+          ctx.globalAlpha = 0.6 * (1 - ph); ctx.beginPath(); ctx.arc(sx, sy, r + ph * 30, 0, TAU); ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+      ctx.save(); ctx.shadowColor = col; ctx.shadowBlur = isHov ? 24 : 12;
+      ctx.fillStyle = 'rgba(36,0,40,.88)'; ctx.beginPath(); ctx.arc(sx, sy, r, 0, TAU); ctx.fill(); ctx.restore();
+      ctx.strokeStyle = isHov ? '#ffffff' : col; ctx.lineWidth = isHov ? 3 : 2.2; ctx.beginPath(); ctx.arc(sx, sy, r, 0, TAU); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; ctx.font = F(800, clamp(r * 0.82, 11, 26)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(i + 1), sx, sy + 1);
+    });
+    ctx.textBaseline = 'alphabetic';
+  }
+  const qpt = (x0, y0, cx, cy, x1, y1, k) => { const a = (1 - k) * (1 - k), b = 2 * (1 - k) * k, c = k * k; return [a * x0 + b * cx + c * x1, a * y0 + b * cy + c * y1]; };
+  /** District view and below: curved links from each unit to its CUP hospital, with travelling light. */
+  function drawNet(t) {
+    if (!fd || !state.layers.net) return;
+    screenTf();
+    const hubs = new Set();
+    ctx.lineCap = 'round';
+    for (const u of UI.unitsByD[fd.code] || []) {
+      const h = u._hub; if (!h) continue;
+      hubs.add(h);
+      const [x0, y0] = toS(h._xy[0], h._xy[1]), [x1, y1] = toS(u._xy[0], u._xy[1]);
+      const dx = x1 - x0, dy = y1 - y0; if (Math.hypot(dx, dy) < 6) continue;
+      const cx = (x0 + x1) / 2 - dy * 0.22, cy = (y0 + y1) / 2 + dx * 0.22;
+      ctx.globalAlpha = !ft || u.tc === ft.code || h.tc === ft.code ? 1 : 0.2;
+      ctx.strokeStyle = 'rgba(4,245,255,.42)'; ctx.lineWidth = 0.8 + 2.4 * Math.sqrt(u.pop / maxUnitPop);
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(cx, cy, x1, y1); ctx.stroke();
+      if (!UI.reduceMotion) {
+        const [px, py] = qpt(x0, y0, cx, cy, x1, y1, (t / 2300 + u._ph) % 1);
+        ctx.drawImage(GLOW_C, px - 9, py - 9, 18, 18);
+      }
+    }
+    ctx.globalAlpha = 1;
+    for (const h of hubs) {
+      const [hx, hy] = toS(h._xy[0], h._xy[1]), rr = unitR(h) + 10, a = UI.reduceMotion ? 0 : t / 1500;
+      ctx.strokeStyle = 'rgba(255,210,63,.95)'; ctx.lineWidth = 1.8;
+      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(hx, hy, rr, a + i * TAU / 3, a + i * TAU / 3 + 1.3); ctx.stroke(); }
+    }
+  }
+  /** Feed the callout card's leader lines with the current screen positions of what it describes. */
+  function updateLeaders() {
+    if (!UI.calloutVisible()) return;
+    UI.drawLeaders(UI.calloutTargets().map(tg => {
+      let p;
+      if (tg.kind === 'd') { const d = UI.byD[tg.code]; p = d._bub ? [d._bub[0] - d._bub[2], d._bub[1]] : toS(d._lab[0], d._lab[1]); }
+      else if (tg.kind === 't') { const x = UI.byT[tg.code]; p = toS(x._lab[0], x._lab[1]); }
+      else { const u = UI.byU[tg.code]; p = toS(u._xy[0], u._xy[1]); }
+      return p[0] > -20 && p[0] < W + 20 && p[1] > -20 && p[1] < H + 20 ? p : null;
+    }));
   }
 
   let last = 0, active = false, running = false;
@@ -2236,9 +2427,12 @@ const Map2D = (() => {
     drawTiles();
     drawAreas(t);
     if (state.layers.grid) drawGrid();
+    drawNet(t);
     if (state.layers.units) drawUnits(t);
+    drawBubbles(t);
     if (state.layers.labels) drawLabels();
     drawScale();
+    updateLeaders();
   }
 
   function activate() {
@@ -2389,6 +2583,49 @@ const Map3D = (() => {
     const stemPos = new Float32Array(NU * 6);
     const stems = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(stemPos, 3)), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 }));
     stems.frustumCulled = false; scene.add(stems);
+
+    // ---------- CUP network: arcs from each unit's hospital to the unit, with a travelling spark ----------
+    U.forEach((u, i) => { const h = UI.byU[u.cup.split(' - ')[0]]; u._hub = h && h !== u ? h : null; u._ph = (i * 0.618) % 1; });
+    const SEG = 28, maxArcs = Math.max(...D.map(d => (UI.unitsByD[d.code] || []).length));
+    const arcPos = new Float32Array(maxArcs * SEG * 6), arcCol = new Float32Array(maxArcs * SEG * 6);
+    const arcGeo = new THREE.BufferGeometry();
+    arcGeo.setAttribute('position', new THREE.BufferAttribute(arcPos, 3));
+    arcGeo.setAttribute('color', new THREE.BufferAttribute(arcCol, 3));
+    const arcs = new THREE.LineSegments(arcGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.95 }));
+    arcs.frustumCulled = false; scene.add(arcs);
+    const sparkPos = new Float32Array(maxArcs * 3);
+    const sparkGeo = new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+    const sparkTex = (() => {
+      const c = document.createElement('canvas'); c.width = c.height = 64;
+      const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.25, 'rgba(4,245,255,.9)'); gr.addColorStop(1, 'rgba(4,245,255,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
+    })();
+    const sparks = new THREE.Points(sparkGeo, new THREE.PointsMaterial({ map: sparkTex, size: 2.6, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+    sparks.frustumCulled = false; scene.add(sparks);
+    const arcCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3());
+    const cHubC = new THREE.Color(0xffd23f), cArc = new THREE.Color(0x04f5ff), cTmp = new THREE.Color(), vA = new THREE.Vector3();
+    function updateArcs(now) {
+      const list = fd && state.layers.net ? (UI.unitsByD[fd.code] || []).filter(u => u._hub && u._k > 0.05) : [];
+      list.forEach((u, a) => {
+        const h = u._hub, p0 = arcCurve.v0.set(h._x, headY(h), h._z), p2 = arcCurve.v2.set(u._x, headY(u), u._z);
+        const dist = Math.hypot(p2.x - p0.x, p2.z - p0.z);
+        arcCurve.v1.set((p0.x + p2.x) / 2, Math.max(p0.y, p2.y) + 2 + dist * 0.38, (p0.z + p2.z) / 2);
+        const dim = (ft && u.tc !== ft.code && h.tc !== ft.code ? 0.25 : 1) * u._k;
+        for (let i = 0; i < SEG; i++) {
+          for (let e = 0; e < 2; e++) {
+            const k = (i + e) / SEG, o = ((a * SEG + i) * 2 + e) * 3;
+            arcCurve.getPoint(k, vA); arcPos[o] = vA.x; arcPos[o + 1] = vA.y; arcPos[o + 2] = vA.z;
+            cTmp.copy(cHubC).lerp(cArc, k).multiplyScalar(dim); arcCol[o] = cTmp.r; arcCol[o + 1] = cTmp.g; arcCol[o + 2] = cTmp.b;
+          }
+        }
+        arcCurve.getPoint(UI.reduceMotion ? 0.5 : (now / 2300 + u._ph) % 1, vA);
+        sparkPos.set([vA.x, vA.y, vA.z], a * 3);
+      });
+      arcGeo.setDrawRange(0, list.length * SEG * 2); sparkGeo.setDrawRange(0, list.length);
+      arcGeo.attributes.position.needsUpdate = arcGeo.attributes.color.needsUpdate = true;
+      sparkGeo.attributes.position.needsUpdate = true;
+    }
     const m4 = new THREE.Matrix4(), q0 = new THREE.Quaternion(), v3 = new THREE.Vector3(), s3 = new THREE.Vector3();
 
     // ---------- HTML labels ----------
@@ -2402,8 +2639,8 @@ const Map3D = (() => {
     function labelText() {
       const M = UI.METRICS[state.metric];
       labs.forEach((L, x) => {
-        if (L.kind === 'd') { L.b.textContent = x.th; L.s.textContent = `${M.fmt(x[state.metric])} ${M.unit}`; }
-        else if (L.kind === 't') { L.b.textContent = `ต.${x.th}`; L.s.textContent = x.pop ? `${M.fmt(x[state.metric])} ${M.unit}` : 'ไม่มีหน่วยบริการ'; }
+        if (L.kind === 'd') { L.b.innerHTML = `<i class="rk">${UI.rankIn(D, x, state.metric)}</i>${x.th}`; L.s.textContent = `${M.fmt(x[state.metric])} ${M.unit}`; }
+        else if (L.kind === 't') { L.b.innerHTML = `${x.pop ? `<i class="rk">${UI.rankIn(UI.tambonsBy[x.amp], x, state.metric)}</i>` : ''}ต.${x.th}`; L.s.textContent = x.pop ? `${M.fmt(x[state.metric])} ${M.unit}` : 'ไม่มีหน่วยบริการ'; }
         else { L.b.textContent = UI.shortName(x.name); L.s.textContent = `${UI.nf0.format(x.pop)} คน`; }
         L.measured = false;
       });
@@ -2581,9 +2818,19 @@ const Map3D = (() => {
       }
       heads.instanceMatrix.needsUpdate = true; heads.instanceColor.needsUpdate = true;
       stems.geometry.attributes.position.needsUpdate = true;
+      updateArcs(now);
       for (const b in bases) { const o = bases[b]; if (o.dirty && now - o.lastUp > 300) { o.tex.needsUpdate = true; o.dirty = false; o.lastUp = now; } }
       if (mouse.dirty && mouse.in && !down) { mouse.dirty = false; pick(!mouse.touch); }
       placeLabels();
+      if (UI.calloutVisible()) {
+        UI.drawLeaders(UI.calloutTargets().map(tg => {
+          let p;
+          if (tg.kind === 'd') { const d = UI.byD[tg.code]; p = project(d._lx, d._h + 0.5, d._lz); }
+          else if (tg.kind === 't') { const t = UI.byT[tg.code]; p = project(t._lx, t._h + 0.5, t._lz); }
+          else { const u = UI.byU[tg.code]; p = project(u._x, headY(u), u._z); }
+          return p[2] < 1 && p[0] > -20 && p[0] < W + 20 && p[1] > -20 && p[1] < H + 20 ? [p[0], p[1]] : null;
+        }));
+      }
       renderer.render(scene, camera);
     }
 
