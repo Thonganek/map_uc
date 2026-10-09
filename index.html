@@ -307,6 +307,24 @@ body:not(.base-plain) .fx-hex{display:none}
   .tbl{margin:14px 10px 0}
   .thead,.trow{grid-template-columns:26px 1fr 44px 56px 76px}
 }
+/* ---------- full-screen map ---------- */
+.mapctl .fo{display:none}
+.mapctl .vtxt{font-family:var(--head);font-size:14px;font-weight:800}
+body.full .mapctl .fo{display:block}
+body.full .mapctl .full-btn{background:var(--pink);color:#fff}
+body.full .top{display:none}
+body.full .layout{display:block;height:100%;position:relative}
+body.full .mapwrap{position:absolute;inset:0}
+body.full .panel{position:absolute;top:12px;left:12px;z-index:20;width:auto;height:auto;max-width:min(560px,calc(100% - 90px));border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:none}
+body.full .pbody,body.full .sheet{display:none!important}
+body.full .phead{border:0;min-height:0;padding:6px 16px 6px 6px}
+body.full .hint{left:auto;right:72px;top:16px;max-width:calc(50% - 90px)}
+body.full .callout{top:72px}
+body.full #toast{bottom:24px}
+@media (max-width:860px){
+  body.full .panel{max-width:calc(100% - 70px)}
+  body.full .hint{right:auto;left:12px;top:62px;max-width:calc(100% - 70px)}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -349,6 +367,9 @@ body:not(.base-plain) .fx-hex{display:none}
       <button id="zOut" aria-label="ซูมออก" title="ซูมออก">−</button>
       <button id="zHome" aria-label="กลับภาพรวมจังหวัด" title="กลับภาพรวมจังหวัด">⌂</button>
       <button id="btnLayers" aria-label="แผนที่พื้นหลังและชั้นข้อมูล" title="แผนที่พื้นหลัง" aria-expanded="false">◧</button>
+      <button id="btnFull" class="full-btn" aria-label="แสดงแผนที่เต็มจอ" title="เต็มจอ (F)" aria-pressed="false">⛶</button>
+      <button id="btnTourMini" class="fo" aria-label="ไฮไลต์อัตโนมัติ" title="ไฮไลต์อัตโนมัติ">▶</button>
+      <button id="btnViewMini" class="fo vtxt" aria-label="สลับ 2D / 3D" title="สลับ 2D / 3D">2D</button>
     </div>
     <div class="layers" id="layersPop" hidden>
       <h3>แผนที่พื้นหลัง</h3>
@@ -1507,7 +1528,8 @@ const UI = (() => {
   /** Free map area in map-local pixels (clear of the hint, callout card, map buttons and legend). */
   function safeRect() {
     const W = mapwrap.clientWidth, H = mapwrap.clientHeight;
-    const top = isMobile() ? 50 : 58;
+    const full = document.body.classList.contains('full');
+    const top = full ? (isMobile() ? 104 : 70) : isMobile() ? 50 : 58;
     const bottom = H - Math.min($('.legend').offsetHeight + 44, H * 0.36);
     const left = calloutVisible() ? 18 + $('#callout').offsetWidth + 22 : 16;
     return { left, right: W - 64, top, bottom: Math.max(top + 110, bottom) };
@@ -1865,6 +1887,7 @@ const UI = (() => {
     document.body.classList.toggle('view-2d', v === '2d');
     document.body.classList.toggle('view-3d', v === '3d');
     tip(null); cursor(null); renderLegend(); drawLeaders([]);
+    $('#btnViewMini').textContent = v === '3d' ? '2D' : '3D';
   }
   segBind('#metricSeg', 'm', setMetric);
   segBind('#baseSeg', 'b', setBase);
@@ -1900,6 +1923,7 @@ const UI = (() => {
     state.tour = true; tourIdx = 0;
     document.body.classList.add('touring');
     btnTour.setAttribute('aria-pressed', 'true'); btnTour.querySelector('.ic').textContent = '■'; btnTour.querySelector('.tx').textContent = 'หยุดไฮไลต์';
+    $('#btnTourMini').textContent = '■';
     next(); requestAnimationFrame(progress);
   }
   function next() {
@@ -1920,9 +1944,39 @@ const UI = (() => {
     state.tour = false; clearTimeout(timer);
     document.body.classList.remove('touring'); bar.style.width = '0';
     btnTour.setAttribute('aria-pressed', 'false'); btnTour.querySelector('.ic').textContent = '▶'; btnTour.querySelector('.tx').textContent = 'ไฮไลต์อัตโนมัติ';
+    $('#btnTourMini').textContent = '▶';
     renderHint();
   }
   btnTour.addEventListener('click', () => (state.tour ? stopTour() : startTour()));
+  $('#btnTourMini').addEventListener('click', () => (state.tour ? stopTour() : startTour()));
+  $('#btnViewMini').addEventListener('click', () => emit('viewRequest', state.view === '3d' ? '2d' : '3d'));
+
+  // ---------- full screen: map fills the screen (header and table hidden, breadcrumb floats on the map) ----------
+  const btnFull = $('#btnFull'), root = document.documentElement;
+  const fsElement = () => document.fullscreenElement || document.webkitFullscreenElement;
+  function setFull(on) {
+    document.body.classList.toggle('full', on);
+    btnFull.textContent = on ? '✕' : '⛶';
+    btnFull.title = on ? 'ออกจากเต็มจอ (F หรือ Esc)' : 'เต็มจอ (F)';
+    btnFull.setAttribute('aria-label', on ? 'ออกจากโหมดเต็มจอ' : 'แสดงแผนที่เต็มจอ');
+    btnFull.setAttribute('aria-pressed', on);
+    renderCallout();
+    setTimeout(() => emit('layout'), 80);
+  }
+  function toggleFull() {
+    const on = !document.body.classList.contains('full');
+    setFull(on);
+    // browser full screen where supported (not on iPhone Safari — the layout-only mode still applies there)
+    if (on) { const req = root.requestFullscreen || root.webkitRequestFullscreen; if (req) Promise.resolve(req.call(root)).catch(() => {}); }
+    else if (fsElement()) { const ex = document.exitFullscreen || document.webkitExitFullscreen; if (ex) Promise.resolve(ex.call(document)).catch(() => {}); }
+  }
+  const onFsChange = () => { if (!fsElement() && document.body.classList.contains('full')) setFull(false); };
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  btnFull.addEventListener('click', toggleFull);
+  addEventListener('keydown', e => {
+    if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey && !(e.target.closest && e.target.closest('input,textarea'))) toggleFull();
+  });
 
   // ---------- coordinates / tooltip / toast ----------
   const coordsEl = $('#coords');
