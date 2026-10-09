@@ -183,7 +183,13 @@ details.more>div{padding-bottom:14px}
 .chk{display:flex;align-items:center;gap:10px;font-size:14.5px;cursor:pointer;user-select:none}
 .chk input{width:18px;height:18px;accent-color:var(--blue);margin:0}
 .legend{position:fixed;right:16px;bottom:28px;z-index:15;width:310px;padding:10px 14px 12px}
-.seg{display:flex;background:var(--fill);border-radius:10px;padding:2px;margin-bottom:10px}
+.seg{display:flex;background:var(--fill);border-radius:10px;padding:2px}
+.lrow{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.lrow>span{flex:none;width:74px;font-size:12.5px;font-weight:600;color:var(--ink2)}
+.lrow .seg{flex:1}
+.lrow+#legendBody{margin-top:10px}
+.sec .seg{flex:none;width:150px}
+.sec .seg button{padding:3px 6px;font-size:13px}
 .seg button{flex:1;border:0;background:transparent;border-radius:8px;padding:5px 6px;cursor:pointer;font-weight:600;font-size:13.5px;color:var(--ink2)}
 .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .lt{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:6px}
@@ -240,7 +246,8 @@ details.more>div{padding-bottom:14px}
   .vt button{width:30px}
   .legend{top:10px;left:10px;right:66px;bottom:auto;width:auto;padding:8px 11px 9px}
   .legend .keys,.legend .lt{display:none}
-  .seg{margin-bottom:7px}
+  .lrow{margin-bottom:6px}
+  .lrow>span{width:auto;font-size:12px;white-space:nowrap}
   .layers{top:10px;right:62px;width:min(300px,calc(100% - 74px))}
   .hint,.coords{display:none}
 }
@@ -299,7 +306,8 @@ details.more>div{padding-bottom:14px}
 </div>
 
 <section class="legend glass" aria-label="คำอธิบายสี">
-  <div class="seg" id="metricSeg" role="group" aria-label="ระบายสีตาม"><button data-m="pop" class="on" aria-pressed="true">จำนวนคน</button><button data-m="density" aria-pressed="false">ความหนาแน่น</button></div>
+  <div class="lrow"><span>แสดงเป็นราย</span><div class="seg" id="grainSeg" role="group" aria-label="แสดงเป็นราย"><button data-g="d" class="on" aria-pressed="true">อำเภอ</button><button data-g="t" aria-pressed="false">ตำบล</button></div></div>
+  <div class="lrow"><span>ระบายสีตาม</span><div class="seg" id="metricSeg" role="group" aria-label="ระบายสีตาม"><button data-m="pop" class="on" aria-pressed="true">จำนวนคน</button><button data-m="density" aria-pressed="false">ความหนาแน่น</button></div></div>
   <div id="legendBody"></div>
 </section>
 <div class="coords" id="coords"></div>
@@ -1394,7 +1402,7 @@ const UI = (() => {
   };
   const TH = () => THEME;
   const state = {
-    view: '2d', base: 'sat', metric: 'pop', d: null, t: null, u: null, hov: null, tour: false,
+    view: '2d', base: 'sat', metric: 'pop', grain: 'd', d: null, t: null, u: null, hov: null, tour: false,
     layers: { units: true, labels: true, bubbles: true, grid: false },
   };
   const niceRound = v => { const p = 10 ** Math.floor(Math.log10(v) - 1); return Math.round(v / p) * p; };
@@ -1542,6 +1550,19 @@ const UI = (() => {
   const unitKind = u => (u.hosp ? 'โรงพยาบาล / ศูนย์บริการ' : 'รพ.สต.');
   const share = (v, total, label) => `<div class="share"><div class="track"><i style="width:${Math.max(0.5, v / total * 100).toFixed(1)}%"></i></div><small>${(v / total * 100).toFixed(1)}% ${label}</small></div>`;
 
+  const grainSeg = () => `<div class="seg pgrain" role="group" aria-label="แสดงเป็นราย">${[['d', 'อำเภอ'], ['t', 'ตำบล']].map(([g, n]) =>
+    `<button data-g="${g}" class="${state.grain === g ? 'on' : ''}" aria-pressed="${state.grain === g}">${n}</button>`).join('')}</div>`;
+  function tambonList(m) {
+    const M = METRICS[m], ts = sorted(T, m), max = Math.max(1, ts[0][m]);
+    return list(ts.map(t => ({ kind: 't', code: t.code, name: t.th, sub: `อ.${byD[t.amp].th}${t.pop ? '' : ' · ไม่มีหน่วยบริการ'}`,
+      icon: `<i class="sw" style="background:${colorT(t, m)}"></i>`, val: t.pop ? M.fmt(t[m]) : '—', dim: !t.pop, frac: t[m] / max, color: colorT(t, m) })));
+  }
+  function tambonInsight(m) {
+    const M = METRICS[m], ts = sorted(T.filter(t => t.pop), m), top = ts[0], none = T.length - ts.length;
+    return `ตำบลที่${m === 'pop' ? 'มีผู้ลงทะเบียนมากที่สุด' : 'หนาแน่นที่สุด'}คือ <b>ต.${esc(top.th)} อ.${esc(byD[top.amp].th)}</b> ${M.fmt(top[m])} ${M.unit}` +
+      (none ? ` · มี <b>${none} ตำบล</b>ที่ไม่มีหน่วยบริการตั้งอยู่` : '');
+  }
+
   function renderPanel() {
     const m = state.metric, M = METRICS[m], lv = level();
     let h = '';
@@ -1550,11 +1571,11 @@ const UI = (() => {
       h = `<div class="eyebrow">ภาพรวมจังหวัด</div><h2 class="title">จังหวัดร้อยเอ็ด</h2>
         <div class="big"><b>${count(TOTAL)}</b><span>คน</span></div><div class="bigcap">ผู้มีสิทธิบัตรทอง (UC) ที่ลงทะเบียนกับหน่วยบริการ</div>
         <div class="tiles"><div><b>20</b>อำเภอ</div><div><b>${T.length}</b>ตำบล</div><div><b>${U.length}</b>หน่วยบริการ</div></div>
-        <p class="insight"><span>${m === 'pop'
+        <p class="insight"><span>${state.grain === 't' ? tambonInsight(m) : m === 'pop'
           ? `<b>อ.${esc(top.th)}</b> มีมากที่สุด ${nf0.format(top.pop)} คน (${(top.pop / TOTAL * 100).toFixed(1)}%) ส่วน <b>อ.${esc(low.th)}</b> น้อยที่สุด ${nf0.format(low.pop)} คน`
           : `<b>อ.${esc(top.th)}</b> หนาแน่นที่สุด ${nf1.format(top.density)} คน/ตร.กม. ส่วน <b>อ.${esc(low.th)}</b> เบาบางที่สุด ${nf1.format(low.density)} คน/ตร.กม.`}</span></p>
-        <div class="sec"><h3>อำเภอ</h3><small>เรียงตาม${M.short}</small></div>
-        ${list(ds.map(d => ({ kind: 'd', code: d.code, name: d.th, icon: `<i class="sw" style="background:${colorD(d, m)}"></i>`, val: M.fmt(d[m]), frac: d[m] / max, color: colorD(d, m) })))}
+        <div class="sec"><h3>${state.grain === 't' ? `ตำบล (${T.length})` : 'อำเภอ (20)'}</h3>${grainSeg()}</div>
+        ${state.grain === 't' ? tambonList(m) : list(ds.map(d => ({ kind: 'd', code: d.code, name: d.th, icon: `<i class="sw" style="background:${colorD(d, m)}"></i>`, val: M.fmt(d[m]), frac: d[m] / max, color: colorD(d, m) })))}
         <details class="more"><summary>พิกัด ข้อมูล และดาวน์โหลด</summary><div>
           <div class="lbl">พิกัดจุดศูนย์กลางจังหวัด</div>${coordBox(P.centroid[0], P.centroid[1])}
           <p class="note">พื้นที่ ${nf0.format(P.area)} ตร.กม. · ความหนาแน่น ${nf1.format(TOTAL / P.area)} คน/ตร.กม. · เฉลี่ย ${nf0.format(TOTAL / 20)} คนต่ออำเภอ</p>
@@ -1622,9 +1643,10 @@ const UI = (() => {
     requestAnimationFrame(step);
   }
   pbody.addEventListener('click', e => {
-    const b = e.target.closest('[data-d],[data-t],[data-u],[data-copy],[data-dl]');
+    const b = e.target.closest('[data-g],[data-d],[data-t],[data-u],[data-copy],[data-dl]');
     if (!b) return;
-    if (b.dataset.d) focus({ d: b.dataset.d });
+    if (b.dataset.g) setGrain(b.dataset.g);
+    else if (b.dataset.d) focus({ d: b.dataset.d });
     else if (b.dataset.t) focus({ t: b.dataset.t });
     else if (b.dataset.u) focus({ u: b.dataset.u });
     else if (b.dataset.copy) copy(b.dataset.copy);
@@ -1692,10 +1714,12 @@ const UI = (() => {
     const b = e.target.closest('.cb'); if (b && !b.classList.contains('cur')) focus(JSON.parse(b.dataset.f));
   });
   function renderLegend() {
-    const m = state.metric, M = METRICS[m], kind = state.d ? 't' : 'd', b = BREAKS[kind][m];
+    const m = state.metric, M = METRICS[m], kind = state.d || state.grain === 't' ? 't' : 'd', b = BREAKS[kind][m];
     const vals = (kind === 'd' ? D : T).map(x => x[m]);
     const lo = kind === 'd' ? Math.min(...vals) : 0, hi = Math.max(...vals);
-    const keys = state.d
+    const keys = !state.d && state.grain === 't'
+      ? `<span>สีแดงเข้ม = ${M.short}มาก</span><span><i class="nod"></i>ไม่มีหน่วยบริการ</span><span>เส้นขาวหนา = ขอบอำเภอ</span>`
+      : state.d
       ? `<span>${`<i class="pin" style="background-image:url(${PIN_URL.unit})"></i>`}รพ.สต.</span><span><i class="pin" style="background-image:url(${PIN_URL.hosp})"></i>รพ. / ศูนย์บริการ</span><span><i class="nod"></i>ไม่มีหน่วยบริการ</span>`
       : state.view === '3d' ? `<span>สีแดงเข้มและแท่งสูง = ${M.short}มาก</span>`
         : `<span>สีแดงเข้ม = ${M.short}มาก</span><span><i class="bub">1</i>วงกลม = อันดับ (ใหญ่ = มาก)</span>`;
@@ -1714,7 +1738,7 @@ const UI = (() => {
     if (state.tour) {
       const n = level() === 'province' ? 'ภาพรวมจังหวัด' : level() === 'district' ? `อ.${byD[state.d].th}` : `ต.${byT[state.t].th} อ.${byD[state.d].th}`;
       el.innerHTML = `ไฮไลต์ ${tourIdx}/${steps.length} · <b>${esc(n)}</b>`;
-    } else el.innerHTML = HINTS[level()];
+    } else el.innerHTML = level() === 'province' && state.grain === 't' ? 'แตะ <b>ตำบล</b> บนแผนที่ เพื่อดูหน่วยบริการในตำบลนั้น' : HINTS[level()];
   }
 
   // ---------- focus / hover / settings ----------
@@ -1758,6 +1782,15 @@ const UI = (() => {
     document.body.classList.toggle('view-3d', v === '3d');
     tip(null); cursor(null); renderLegend();
   }
+  function setGrain(g) {
+    if (state.grain === g) return;
+    state.grain = g;
+    document.querySelectorAll('[data-g]').forEach(b => { const o = b.dataset.g === g; b.classList.toggle('on', o); b.setAttribute('aria-pressed', o); });
+    stopTour();
+    if (state.d) focus({}); else { renderPanel(); renderLegend(); renderHint(); }
+    emit('grain', g); emit('layout');
+  }
+  segBind('#grainSeg', 'g', setGrain);
   segBind('#metricSeg', 'm', setMetric);
   segBind('#baseSeg', 'b', setBase);
   segBind('#viewSeg', 'view', v => emit('viewRequest', v));
@@ -2073,7 +2106,7 @@ const Map2D = (() => {
     if (!hit) {
       const [lon, lat] = inv(...toW(mouse.x, mouse.y));
       const d = UI.districtAt(lat, lon);
-      if (d && fd && d === fd) { const t = UI.tambonAt(lat, lon, d.code); hit = t ? { kind: 't', code: t.code } : { kind: 'd', code: d.code }; }
+      if (d && ((fd && d === fd) || (!fd && state.grain === 't'))) { const t = UI.tambonAt(lat, lon, d.code); hit = t ? { kind: 't', code: t.code } : { kind: 'd', code: d.code }; }
       else if (d) hit = { kind: 'd', code: d.code };
     }
     picked = hit;
@@ -2140,9 +2173,18 @@ const Map2D = (() => {
       ctx.fillStyle = light ? 'rgba(15,23,42,.32)' : th.mask; ctx.fill(mask, 'evenodd');
     }
     const alpha = state.base === 'sat' ? 0.62 : light ? 0.8 : 0.9;
+    const byTambon = !fd && state.grain === 't';
+    // whole province by tambon
+    if (byTambon) {
+      ctx.globalAlpha = alpha;
+      for (const tb of T) { ctx.fillStyle = UI.colorT(tb, m); ctx.fill(tb._p, 'evenodd'); }
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = 0.8 * inv_s;
+      for (const tb of T) ctx.stroke(tb._p);
+    }
     // districts
     for (const d of D) {
-      if (fd && d === fd) continue;
+      if ((fd && d === fd) || byTambon) continue;
       ctx.globalAlpha = fd ? 0.55 : alpha;
       ctx.fillStyle = fd ? th.other : UI.colorD(d, m);
       ctx.fill(d._p, 'evenodd');
@@ -2163,7 +2205,7 @@ const Map2D = (() => {
     const hx = hov && (hov.kind === 'd' ? UI.byD[hov.code] : hov.kind === 't' ? UI.byT[hov.code] : null);
     if (hx && hx !== ft && !(hov.kind === 'd' && hx === fd)) { ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.fill(hx._p, 'evenodd'); }
     // district borders and glowing province outline
-    ctx.strokeStyle = fd ? th.lineDim : th.line; ctx.lineWidth = 1.2 * inv_s;
+    ctx.strokeStyle = fd ? th.lineDim : byTambon ? '#ffffff' : th.line; ctx.lineWidth = (byTambon ? 2 : 1.2) * inv_s;
     for (const d of D) ctx.stroke(d._p);
     strokeGlow(prov, th.prov, 2, th.provGlow);
     if (hx && hx !== ft && !(hov.kind === 'd' && hx === fd)) { ctx.strokeStyle = th.hover; ctx.lineWidth = 2.2 * inv_s; ctx.stroke(hx._p); }
@@ -2255,6 +2297,12 @@ const Map2D = (() => {
       }
     }
     if (fd && !fu) for (const tb of [...UI.tambonsBy[fd.code]].sort((a, b) => b.pop - a.pop)) if (tb !== ft) tLabel(tb, false);
+    if (!fd && state.grain === 't') {
+      const hx = hov && hov.kind === 't' ? UI.byT[hov.code] : null;
+      if (hx) tLabel(hx, true);
+      for (const tb of UI.sorted(T, m)) if (tb !== hx) tLabel(tb, false);
+      return;
+    }
     const ds = [...D].sort((a, b) => b[m] - a[m]);
     for (const d of ds) {
       if (d === fd) continue;
@@ -2278,7 +2326,7 @@ const Map2D = (() => {
   /** Province view: one white badge per district (area ∝ value) showing its rank. */
   function drawBubbles(t) {
     D.forEach(d => (d._bub = null));
-    if (fd || !state.layers.bubbles) return;
+    if (fd || !state.layers.bubbles || state.grain === 't') return;
     screenTf();
     const m = state.metric, ds = UI.sorted(D, m), max = ds[0][m];
     const rMax = clamp(31 * Math.sqrt(view.s / fitS), 14, 64) * unitScale;
@@ -2536,11 +2584,14 @@ const Map3D = (() => {
       labs.set(x, { el, b: el.querySelector('b'), s: el.querySelector('span'), w: 60, h: 36, kind, shown: false });
     }
     D.forEach(d => mkLabel(d, 'd')); T.forEach(t => mkLabel(t, 't')); U.forEach(u => mkLabel(u, 'u'));
+    let labelCtx = '';
+    const tambonRank = x => (!fd && state.grain === 't' ? UI.rankIn(T, x, state.metric) : UI.rankIn(UI.tambonsBy[x.amp], x, state.metric));
     function labelText() {
       const M = UI.METRICS[state.metric];
+      labelCtx = `${!fd && state.grain === 't'}|${state.metric}`;
       labs.forEach((L, x) => {
         if (L.kind === 'd') { L.b.innerHTML = `<i class="rk">${UI.rankIn(D, x, state.metric)}</i>${x.th}`; L.s.textContent = `${M.fmt(x[state.metric])} ${M.unit}`; }
-        else if (L.kind === 't') { L.b.innerHTML = `${x.pop ? `<i class="rk">${UI.rankIn(UI.tambonsBy[x.amp], x, state.metric)}</i>` : ''}ต.${x.th}`; L.s.textContent = x.pop ? `${M.fmt(x[state.metric])} ${M.unit}` : 'ไม่มีหน่วยบริการ'; }
+        else if (L.kind === 't') { L.b.innerHTML = `${x.pop ? `<i class="rk">${tambonRank(x)}</i>` : ''}ต.${x.th}`; L.s.textContent = x.pop ? `${M.fmt(x[state.metric])} ${M.unit}` : 'ไม่มีหน่วยบริการ'; }
         else { L.b.textContent = UI.shortName(x.name); L.s.textContent = `${UI.nf0.format(x.pop)} คน`; }
         L.measured = false;
       });
@@ -2660,6 +2711,7 @@ const Map3D = (() => {
       let order;
       if (fu || ft) order = [fu, ...(UI.unitsByT[ft.code] || []).filter(u => u !== fu), ft, ...UI.tambonsBy[fd.code].filter(t => t !== ft)];
       else if (fd) order = [...UI.tambonsBy[fd.code]].sort((a, b) => b[m] - a[m]);
+      else if (state.grain === 't') order = UI.sorted(T, m);
       else order = [...D].sort((a, b) => b[m] - a[m]);
       const want = new Set(order.filter(Boolean));
       labs.forEach((L, x) => { if (!want.has(x) && L.shown) { L.el.style.opacity = 0; L.shown = false; } });
@@ -2702,12 +2754,14 @@ const Map3D = (() => {
       sun.shadow.camera.updateProjectionMatrix();
 
       const maxD = Math.max(...D.map(d => d[m]));
+      const byTambon = !fd && state.grain === 't';
+      if (labelCtx !== `${byTambon}|${m}`) labelText();
       for (const d of D) {
-        const goal = fd ? (d === fd ? 0 : 0.35) : Math.max(0.6, HD * d[m] / maxD);
+        const goal = fd ? (d === fd ? 0 : 0.35) : byTambon ? 0 : Math.max(0.6, HD * d[m] / maxD);
         updateArea(d, goal, fd ? 0.45 : 0.94, fd ? th.other : UI.colorD(d, m), 0xffffff, fd ? 0.25 : 0.9, k);
       }
       for (const t of T) {
-        const inD = fd && t.amp === fd.code;
+        const inD = fd ? t.amp === fd.code : byTambon;
         updateArea(t, inD ? goalHT(t) : 0, ft ? (t === ft ? 0.6 : 0.38) : 0.95, UI.colorT(t, m), 0xffffff, t === ft ? 1 : 0.75, k);
       }
       distLines.visible = !fd;
