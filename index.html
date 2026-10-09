@@ -246,24 +246,76 @@ details.more>div{padding-bottom:14px}
   :root{--panelW:340px}
   .legend{width:270px}
 }
-@media (max-width:860px){
-  html,body{font-size:14.5px}
-  .sheet{left:0;right:0;bottom:0;top:auto;width:auto;height:46%;border-radius:20px 20px 0 0;border-bottom:0}
-  .sheet.collapsed{height:auto}
+@media (max-width:860px) and (orientation:portrait){
+  :root{--sheetH:44vh}
+  html,body{font-size:15px}
+  /* bottom sheet */
+  .sheet{left:0;right:0;bottom:0;top:auto;width:auto;height:44vh;border-radius:22px 22px 0 0;border-bottom:0;transition:height .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -8px 30px rgba(4,120,87,.16)}
+  .sheet.dragging{transition:none}
+  .sheet.collapsed{bottom:0}
+  body.sheet-full .ctl,body.sheet-full .legend,body.sheet-full .hint,body.sheet-full .layers{visibility:hidden}
+  .sheet.collapsed .crumbs{display:flex}
   .sheet.holo::after{display:none}
-  .grip{display:block;width:40px;height:5px;border-radius:3px;background:rgba(5,150,105,.25);margin:7px auto 0;flex:none;cursor:pointer}
-  .shead{padding:6px 14px 8px}
-  .logo{width:32px;height:32px}
+  .grip{display:block;width:100%;height:22px;margin:0;flex:none;cursor:grab;touch-action:none;position:relative}
+  .grip::before{content:"";position:absolute;left:50%;top:8px;width:44px;height:5px;margin-left:-22px;border-radius:3px;background:rgba(5,150,105,.35)}
+  .shead{padding:0 14px 8px;touch-action:none}
+  .logo{width:30px;height:30px}
   .htxt h1{font-size:17px}
-  .title{font-size:24px}.big b{font-size:35px}
-  .ctl{top:10px;right:10px;padding:5px}
-  .ctl>button{width:34px;height:34px}
-  .vt button{width:30px}
-  .legend{top:10px;left:10px;right:66px;bottom:auto;width:auto;padding:8px 11px 9px}
+  .htxt p{display:none}
+  .ibtn{width:34px;height:34px}
+  .search input{height:44px;font-size:16px}
+  .search svg{top:13px}
+  .crumbs{font-size:14.5px}
+  .crumbs .back{width:32px;height:32px}
+  .sbody{padding:2px 14px 28px}
+  .title{font-size:24px}.big b{font-size:36px}
+  .tiles b{font-size:20px}
+  .row{padding:11px 12px}
+  .row .nm span{font-size:16px}
+  .row .val{font-size:16px}
+  .results{max-height:52vh}
+  /* map controls: pinch to zoom, so the +/- buttons go */
+  .ctl{top:10px;right:10px;padding:4px}
+  .ctl>button{width:38px;height:38px}
+  #zIn,#zOut,#zOut+.sep{display:none}
+  .vt button{width:34px;height:30px}
+  .layers{top:10px;right:60px;width:min(300px,calc(100% - 72px))}
+  /* compact one-line legend: two switches side by side + colour ramp with "less / more" */
+  .legend{top:10px;left:10px;right:62px;bottom:auto;width:auto;padding:8px 10px 8px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .lrow{margin:0}
+  .lrow>span{display:none}
+  .lrow .seg button{padding:5px 4px;font-size:13px}
+  .lg-long{display:none}
+  .lrow+#legendBody{margin-top:0}
+  #legendBody{grid-column:1/-1}
   .legend .keys,.legend .lt{display:none}
-  .lrow{margin-bottom:6px}
-  .lrow>span{width:auto;font-size:12px;white-space:nowrap}
-  .layers{top:10px;right:62px;width:min(300px,calc(100% - 74px))}
+  .ticks span:not(:first-child):not(:last-child){display:none}
+  .ticks span:first-child::before{content:"น้อย "}
+  .ticks span:last-child::after{content:" มาก"}
+  .ticks{font-size:12.5px;font-weight:600}
+  /* hint and attribution float just above the sheet */
+  .hint{display:block;top:auto;bottom:calc(var(--sheetH) + 24px);left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);font-size:13px;padding:6px 13px}
+  .attr{bottom:var(--sheetH);font-size:10px}
+  .coords{display:none}
+  body.full .hint{display:none}
+}
+@media (max-height:520px) and (orientation:landscape){
+  :root{--panelW:300px}
+  .sheet{top:8px;bottom:8px;left:8px}
+  .shead{padding:10px 12px 6px}
+  .htxt p{display:none}
+  .logo{width:30px;height:30px}
+  .search{margin:0 12px 6px}.search input{height:36px}.search svg{top:9px}
+  .title{font-size:22px}.big b{font-size:32px}
+  .ctl{top:8px;right:8px;padding:3px}
+  .ctl>button{width:32px;height:32px}
+  #zIn,#zOut,#zOut+.sep{display:none}
+  .vt button{width:30px;height:24px}
+  .layers{top:8px;right:56px}
+  .legend{right:8px;bottom:8px;width:260px;padding:8px 10px}
+  .legend .keys,.legend .lt{display:none}
+  .lrow{margin-bottom:5px}.lrow>span,.lg-long{display:none}
+  .legend{width:240px}
   .hint,.coords{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -322,7 +374,7 @@ details.more>div{padding-bottom:14px}
 
 <section class="legend glass holo" aria-label="คำอธิบายสี">
   <div class="lrow"><span>แสดงเป็นราย</span><div class="seg" id="grainSeg" role="group" aria-label="แสดงเป็นราย"><button data-g="d" class="on" aria-pressed="true">อำเภอ</button><button data-g="t" aria-pressed="false">ตำบล</button></div></div>
-  <div class="lrow"><span>ระบายสีตาม</span><div class="seg" id="metricSeg" role="group" aria-label="ระบายสีตาม"><button data-m="pop" class="on" aria-pressed="true">จำนวนคน</button><button data-m="density" aria-pressed="false">ความหนาแน่น</button></div></div>
+  <div class="lrow"><span>ระบายสีตาม</span><div class="seg" id="metricSeg" role="group" aria-label="ระบายสีตาม"><button data-m="pop" class="on" aria-pressed="true">จำนวนคน</button><button data-m="density" aria-pressed="false"><span class="lg-long">ความ</span>หนาแน่น</button></div></div>
   <div id="legendBody"></div>
 </section>
 <div class="coords" id="coords"></div>
@@ -1461,15 +1513,16 @@ const UI = (() => {
 
   // ---------- layout ----------
   const mapwrap = $('#mapwrap'), panel = $('#panel'), pbody = $('#pbody');
-  const isMobile = () => innerWidth <= 860;
+  // phone layout = narrow portrait screen (bottom sheet); short landscape screens keep the side panel in a compact form
+  const isMobile = () => innerWidth <= 860 && innerHeight >= innerWidth;
   /** Free map area in map-local pixels (clear of the side sheet, hint, controls and legend). */
   function safeRect() {
     const W = mapwrap.clientWidth, H = mapwrap.clientHeight, pr = panel.getBoundingClientRect(), lg = $('.legend').getBoundingClientRect();
     if (isMobile()) {
       const top = lg.bottom + 10;
-      return { left: 10, right: W - 58, top, bottom: Math.max(top + 120, pr.top - 10) };
+      return { left: 10, right: W - 56, top, bottom: Math.max(top + 120, pr.top - 44) };
     }
-    const top = 64, bottom = H - lg.height - 40;
+    const top = innerHeight < 520 ? 16 : 64, bottom = H - lg.height - (innerHeight < 520 ? 20 : 40);
     return { left: pr.right + 18, right: W - 76, top, bottom: Math.max(top + 140, bottom) };
   }
 
@@ -1702,9 +1755,10 @@ const UI = (() => {
     const x = hits[i]; if (!x) return;
     qEl.value = ''; closeResults(); qEl.blur();
     focus({ [x.kind]: x.code });
+    if (isMobile()) setSheet('half');
   }
   qEl.addEventListener('input', runSearch);
-  qEl.addEventListener('focus', () => { if (qEl.value) runSearch(); });
+  qEl.addEventListener('focus', () => { if (isMobile()) setSheet('full'); if (qEl.value) runSearch(); });
   qEl.addEventListener('keydown', e => {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       if (!hits.length) return;
@@ -1766,7 +1820,10 @@ const UI = (() => {
     if (d === state.d && t === state.t && u === state.u) return;
     Object.assign(state, { d, t, u });
     renderPanel(); renderCrumbs(); renderLegend(); renderHint();
-    if (src !== 'tour' && panel.classList.contains('collapsed') && d) setCollapsed(false);
+    if (src !== 'tour') {
+      if (isMobile()) { if (sheetMode !== 'full' || d) setSheet('half'); }
+      else if (panel.classList.contains('collapsed') && d) setCollapsed(false);
+    }
     emit('focus', { level: level(), d: byD[d] || null, t: byT[t] || null, u: byU[u] || null });
     emit('layout');
   }
@@ -1813,12 +1870,64 @@ const UI = (() => {
   segBind('#viewSeg', 'view', v => emit('viewRequest', v));
 
   function setCollapsed(c) {
+    if (isMobile()) { setSheet(c ? 'peek' : 'half'); return; }
     panel.classList.toggle('collapsed', c);
     $('#btnCollapse').setAttribute('aria-expanded', !c);
     setTimeout(() => emit('layout'), 320);
   }
-  $('#btnCollapse').addEventListener('click', () => setCollapsed(!panel.classList.contains('collapsed')));
-  $('#grip').addEventListener('click', () => setCollapsed(!panel.classList.contains('collapsed')));
+  // phone bottom sheet: peek (header, search, breadcrumb) / half / full
+  let sheetMode = 'half';
+  const root2 = document.documentElement;
+  function sheetHeights() {
+    const peek = $('#grip').offsetHeight + $('.shead').offsetHeight + $('.search').offsetHeight + $('#crumbs').offsetHeight + 26;
+    return { peek, half: Math.max(peek + 80, Math.round(innerHeight * 0.44)), full: Math.round(innerHeight - 10) };
+  }
+  function applySheetH(h) {
+    panel.style.height = h + 'px';
+    root2.style.setProperty('--sheetH', h + 'px');
+  }
+  function setSheet(mode) {
+    if (!isMobile()) return;
+    sheetMode = mode;
+    panel.classList.toggle('collapsed', mode === 'peek');
+    panel.dataset.mode = mode;
+    document.body.classList.toggle('sheet-full', mode === 'full');
+    $('#btnCollapse').setAttribute('aria-expanded', mode !== 'peek');
+    applySheetH(sheetHeights()[mode]);
+    setTimeout(() => emit('layout'), 300);
+  }
+  function syncSheet() {
+    if (isMobile()) setSheet(sheetMode);
+    else { panel.style.height = ''; panel.classList.toggle('collapsed', false); document.body.classList.remove('sheet-full'); root2.style.removeProperty('--sheetH'); }
+  }
+  $('#btnCollapse').addEventListener('click', () => (isMobile() ? setSheet(sheetMode === 'peek' ? 'half' : 'peek') : setCollapsed(!panel.classList.contains('collapsed'))));
+  // drag the grip / header to resize; a short tap cycles peek -> half -> full -> half
+  let drag = null;
+  const dragZone = e => isMobile() && (e.target.closest('#grip') || (e.target.closest('.shead') && !e.target.closest('button')));
+  panel.addEventListener('pointerdown', e => {
+    if (!dragZone(e)) return;
+    drag = { y: e.clientY, h: panel.offsetHeight, moved: 0, id: e.pointerId };
+    panel.setPointerCapture(e.pointerId); panel.classList.add('dragging');
+  });
+  panel.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dy = e.clientY - drag.y, H = sheetHeights();
+    drag.moved = Math.max(drag.moved, Math.abs(dy));
+    if (drag.moved > 4) { applySheetH(Math.max(H.peek, Math.min(H.full, drag.h - dy))); document.body.classList.toggle('sheet-full', panel.offsetHeight > H.half + 80); }
+  });
+  const endDrag = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const d = drag; drag = null; panel.classList.remove('dragging');
+    if (d.moved <= 4) { setSheet(sheetMode === 'peek' ? 'half' : sheetMode === 'half' ? 'full' : 'half'); return; }
+    const H = sheetHeights(), h = panel.offsetHeight, dy = e.clientY - d.y;
+    const order = ['peek', 'half', 'full'];
+    let i = order.indexOf(sheetMode);
+    if (dy < -40) i = Math.min(2, i + (h > H.half + 60 ? 2 : 1)); else if (dy > 40) i = Math.max(0, i - (h < H.half - 60 ? 2 : 1));
+    else i = order.reduce((b, m, k) => (Math.abs(H[m] - h) < Math.abs(H[order[b]] - h) ? k : b), 0);
+    setSheet(order[i]);
+  };
+  panel.addEventListener('pointerup', endDrag);
+  panel.addEventListener('pointercancel', endDrag);
 
   const pop = $('#layersPop'), btnLayers = $('#btnLayers');
   $('#layers').innerHTML = [['bubbles', 'วงกลมอันดับอำเภอ'], ['units', 'หมุดหน่วยบริการ'], ['labels', 'ชื่อพื้นที่และตัวเลข'], ['grid', 'เส้นละติจูด/ลองจิจูด (2D)']]
@@ -1877,7 +1986,7 @@ const UI = (() => {
     if (document.body.classList.contains('full') === onFull) return;
     document.body.classList.toggle('full', onFull);
     btnFull.setAttribute('aria-pressed', onFull); btnFull.title = onFull ? 'ออกจากเต็มจอ (F หรือ Esc)' : 'เต็มจอ (F)';
-    if (onFull) { wasCollapsed = panel.classList.contains('collapsed'); setCollapsed(true); } else setCollapsed(wasCollapsed);
+    if (onFull) { wasCollapsed = isMobile() ? sheetMode === 'peek' : panel.classList.contains('collapsed'); setCollapsed(true); } else setCollapsed(wasCollapsed);
   }
   function toggleFull() {
     const want = !document.body.classList.contains('full');
@@ -1972,7 +2081,8 @@ const UI = (() => {
 
   // ---------- init ----------
   setAttr(); renderPanel(); renderCrumbs(); renderLegend(); renderHint();
-  addEventListener('resize', () => emit('layout'));
+  addEventListener('resize', () => { syncSheet(); emit('layout'); });
+  syncSheet();
 
   return {
     D, T, U, P, byD, byT, byU, tambonsBy, unitsByT, unitsByD, shortName, state, METRICS, TH, level, colorD, colorT, on, emit,
@@ -2334,7 +2444,7 @@ const Map2D = (() => {
     screenTf();
     const pxKm = KM * view.s, nice = [0.2, 0.5, 1, 2, 5, 10, 20, 50];
     const km = nice.find(k => k * pxKm >= 70) || 50, len = km * pxKm;
-    const x = R.left + 6, y = H - 22;
+    const x = R.left + 6, y = UI.isMobile() ? R.bottom + 14 : H - 22;
     ctx.strokeStyle = UI.TH().text; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(x, y - 6); ctx.lineTo(x, y); ctx.lineTo(x + len, y); ctx.lineTo(x + len, y - 6); ctx.stroke();
     ctx.font = F(600, 12.5); ctx.fillStyle = UI.TH().text; ctx.textAlign = 'center';
@@ -2837,7 +2947,7 @@ const Map3D = (() => {
 (() => {
   const maps = { '2d': Map2D, '3d': Map3D };
   // desktop opens in the realistic 3D view, phones in 2D; #2d / #3d in the URL override
-  const fromHash = () => { const h = location.hash.toLowerCase(); return h === '#3d' ? '3d' : h === '#2d' ? '2d' : UI.isMobile() ? '2d' : '3d'; };
+  const fromHash = () => { const h = location.hash.toLowerCase(); return h === '#3d' ? '3d' : h === '#2d' ? '2d' : UI.isMobile() || innerWidth <= 860 || innerHeight < 520 ? '2d' : '3d'; };
   let cur = null, ready = false;
 
   function apply(v) {
